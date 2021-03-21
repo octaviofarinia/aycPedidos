@@ -22,6 +22,9 @@ public class RegistroController {
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private UsuarioController usuarioController;
 
     @GetMapping("/registro_usuario")
     public String registroCliente(ModelMap modelo) {
@@ -44,9 +47,9 @@ public class RegistroController {
             usuarioService.registrarUsuario(username, mail, password, repeated_password, Rol.valueOf(rol));
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return this.registroCliente(modelo);
+            return usuarioController.usuariosABM(modelo);
         }
-        return "redirect:/login";
+        return "redirect:/usuarios_ABM";
     }
 
 }

@@ -40,9 +40,8 @@ public class Pedido {
     private Usuario vendedor;
     @ManyToOne
     private Usuario disenador;
-    
-//    private Imagen preview;
-//    private Archivo archivo;
+    @OneToOne
+    private Foto muestra;
 
     public Long getId() {
         return id;
@@ -106,6 +105,14 @@ public class Pedido {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    public Foto getMuestra() {
+        return muestra;
+    }
+
+    public void setMuestra(Foto muestra) {
+        this.muestra = muestra;
     }
     
 }

@@ -1,9 +1,11 @@
 package com.okta.aycPedidos.entities;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -19,8 +21,9 @@ public class Tapa {
     private Integer codigoFondo;
     private Integer codigoFrase;
     private String nombre;
-//    private Int fondoCustom;
-//    private Int fraseCustom;
+    @OneToMany
+    private List<Foto> fondosCustom;
+    private String fraseCustom;
 
     public Long getId() {
         return id;
@@ -53,6 +56,21 @@ public class Tapa {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
+    public List<Foto> getFondosCustom() {
+        return fondosCustom;
+    }
+
+    public void setFondosCustom(List<Foto> fondosCustom) {
+        this.fondosCustom = fondosCustom;
+    }
+
+    public String getFraseCustom() {
+        return fraseCustom;
+    }
+
+    public void setFraseCustom(String fraseCustom) {
+        this.fraseCustom = fraseCustom;
+    }
     
 }
