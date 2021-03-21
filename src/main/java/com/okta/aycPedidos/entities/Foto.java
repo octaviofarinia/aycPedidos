@@ -1,0 +1,80 @@
+package com.okta.aycPedidos.entities;
+
+import com.okta.aycPedidos.enums.TipoFoto;
+import java.util.Base64;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ *
+ * @author octav
+ */
+@Entity
+public class Foto {
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+
+    private String nombre;
+    private String mime;
+    @Enumerated(EnumType.STRING)
+    private TipoFoto tipoFoto;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] contenido;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getMime() {
+        return mime;
+    }
+
+    public void setMime(String mime) {
+        this.mime = mime;
+    }
+
+    public byte[] getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(byte[] contenido) {
+        this.contenido = contenido;
+    }
+
+    public String getImgData() {
+        return Base64.getMimeEncoder().encodeToString(contenido);
+    }
+
+    public TipoFoto getTipoFoto() {
+        return tipoFoto;
+    }
+
+    public void setTipoFoto(TipoFoto tipoFoto) {
+        this.tipoFoto = tipoFoto;
+    }
+    
+}
