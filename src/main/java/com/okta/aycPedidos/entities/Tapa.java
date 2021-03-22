@@ -20,7 +20,6 @@ public class Tapa {
     
     private Integer codigoFondo;
     private Integer codigoFrase;
-    private String nombre;
     @OneToMany
     private List<Foto> fondosCustom;
     private String fraseCustom;
@@ -47,14 +46,6 @@ public class Tapa {
 
     public void setCodigoFrase(Integer codigoFrase) {
         this.codigoFrase = codigoFrase;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public List<Foto> getFondosCustom() {

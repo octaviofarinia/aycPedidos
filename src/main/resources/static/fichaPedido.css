@@ -1,0 +1,38 @@
+.navbar__container {
+    display: flex;
+}
+
+.navbar__list {
+    display: flex;
+    margin: 0;
+    padding: 0, 0, 0, 100px;
+
+}
+
+.navbar__list-item {
+    width: 140px;
+}
+
+.order-container {
+    padding-top: 60px;
+}
+
+.label {
+    color: red;
+    font-size: small;
+    margin: 20px;
+    padding: 10px 0;
+    width: 2000px;
+}
+
+.returned-value {
+    font-size: large;
+    color: blue;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.dialog {
+    border: 2px solid black;
+    margin-left: 50px;
+}

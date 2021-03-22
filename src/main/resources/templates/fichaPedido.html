@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="fichaPedido.css" rel="stylesheet">
+    <title>Ficha Pedido</title>
+</head>
+<body>
+    <div class="main">
+        <div class="navbar__container">
+            <div class="logo">Logo</div>
+            <div class="navbar__list-container">
+                <ul class="navbar__list">
+                    <li class="navbar__list-item">Nuevo Pedido</li>
+                    <li class="navbar__list-item">Listado de Pedidos</li>
+                </ul>
+            </div>
+        </div>
+        <div class="order-container">
+            <div class="label">
+                Nombre: 
+                <!--Input info from server here-->
+                <span class="returned-value">Juan Perez</span>
+            </div>
+            <div class="label">
+                 # Pedido:
+                <!--Input info from server here-->
+                <span class="returned-value">62377</span>
+            </div>
+            <div class="label">
+                Fecha:
+                <!--Input info from server here-->
+                <span class="returned-value"  id="#">11 Mayo, 2021</span>
+            </div>
+            <div class="label">
+                Cantidad:
+                <!--Input info from server here-->
+                <span class="returned-value" id="#">5</span>
+            </div>
+            <div class="label">
+                Hoja:
+                <!--Input info from server here-->
+                <span class="returned-value" id="#">A4</span>
+            </div>
+            <div class="label">
+                Tapa:
+                <!--Input image from server here OR MAYBE BETTER A LINK AND A THUMBNAIL-->
+                <img class="returned-image" id="#">
+                <a href="#">Descargar Imagen</a>
+            </div>
+            <div class="label">
+                Contratapa:
+                <!--Input image from server here OR MAYBE BETTER A LINK AND A THUMBNAIL-->
+                <img class="returned-image" id="#">
+                <a href="#">Descargar Imagen</a>
+            </div>
+            <!--Dialog box that can be repeated with question/answer pair-->
+            <p class="label">Comunicaciones:</p>
+            <div class="dialog" id="#">
+                <span class="date" id="#">03 Enero, 2021</span>
+                Commentario:
+                <p id="#">blah blah blah</p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

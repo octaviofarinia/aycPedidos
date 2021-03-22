@@ -10,5 +10,5 @@ package com.okta.aycPedidos.enums;
  * @author octav
  */
 public enum CodigoProducto {
-    AF5, AF4;
+    AF5, AF4, AS4, ADF5;
 }

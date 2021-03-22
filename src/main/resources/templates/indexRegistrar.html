@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styleRegistrar.css" rel="stylesheet">
+    <title>Registar</title>
+</head>
+<body>
+    <div class="main">
+        <div class="navbar__container">
+            <div class="logo">Logo</div>
+            <div class="navbar__list-container">
+                <ul class="navbar__list">
+                    <li class="navbar__list-item">Vendedor</li>
+                    <li class="navbar__list-item">Diseñador</li>
+                    <li class="navbar__list-item">Administrador</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-container">
+            <form  id="log-in" action="results.html" method="GET" enctype="multipart/form-data">
+            <div class="username">
+                <label for="username"></label>
+                <input type="text" id="username" name="username" placeholder="Usario" required>
+            </div>
+            <div class="password">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button id="login-submit" type="submit">Ingresar</button>
+            </form>
+        </div>
+    </div>  
+</body>
+</html>

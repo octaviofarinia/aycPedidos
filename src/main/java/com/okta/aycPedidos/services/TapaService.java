@@ -22,7 +22,6 @@ public class TapaService {
 
         tapa.setCodigoFondo(codigoFondo);
         tapa.setCodigoFrase(codigoFrase);
-        tapa.setNombre(nombre);
 
         tapaRepository.save(tapa);
     }
@@ -33,7 +32,6 @@ public class TapaService {
 
         modificada.setCodigoFondo(codigoFondo);
         modificada.setCodigoFrase(codigoFrase);
-        modificada.setNombre(nombre);
 
         tapaRepository.save(modificada);
     }

@@ -26,6 +26,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private String nombreCliente;
     private Integer cantidad;
     @Temporal(TemporalType.DATE)
     private Date fechaEmision;
@@ -113,6 +114,14 @@ public class Pedido {
 
     public void setMuestra(Foto muestra) {
         this.muestra = muestra;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
     
 }
