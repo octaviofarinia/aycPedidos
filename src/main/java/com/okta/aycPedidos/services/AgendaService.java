@@ -22,10 +22,10 @@ public class AgendaService {
     private AgendaRepository agendaRepository;
 
     @Transactional
-    public void registrarAgenda(String codigo, Tapa tapa, Tapa contratapa) {
+    public void registrarAgenda(String codigoInterior, Tapa tapa, Tapa contratapa) {
         Agenda agenda = new Agenda();
 
-        agenda.setCodigo(CodigoProducto.valueOf(codigo));
+        agenda.setCodigo(CodigoProducto.valueOf(codigoInterior));
         agenda.setTapa(tapa);
         agenda.setContratapa(contratapa);
 

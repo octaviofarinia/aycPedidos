@@ -8,6 +8,7 @@ import com.okta.aycPedidos.enums.Estado;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,28 +24,35 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     private ComentarioService comentarioService;
+    @Autowired
+    private AgendaService agendaService;
+
 
     @Transactional
-    public void validarPedido(Integer cantidad, Date fechaEmision, String estado, Agenda agenda, Usuario vendedor, ArrayList<Comentario> comentarios) throws Exception {
+    public void validarPedido(Integer cantidad, String estado, Agenda agenda, Usuario vendedor, Comentario comentario) throws Exception {
         if (cantidad <= 0) {
             throw new Exception("la cantidad debe ser mayor o igual a 1");
         }
     }
 
     @Transactional
-    public void registrarPedido(Integer cantidad, Date fechaEmision, String descripcion, String estado, Agenda agenda, Usuario vendedor, ArrayList<Comentario> comentarios) throws Exception {
+    public void registrarPedido(String nombreCliente, Integer cantidad, String descripcion, String estado, Agenda agenda, Usuario vendedor, Comentario comentario) throws Exception {
 
-        validarPedido(cantidad, fechaEmision, estado, agenda, vendedor, comentarios);
+        validarPedido(cantidad, estado, agenda, vendedor, comentario);
 
         Pedido pedido = new Pedido();
 
+        pedido.setNombreCliente(nombreCliente);
         pedido.setCantidad(cantidad);
-        pedido.setFechaEmision(fechaEmision);
+        pedido.setFechaEmision(new Date());
         pedido.setEstado(Estado.valueOf(estado));
+        
+        
         pedido.setAgenda(agenda);
+        
+        
         pedido.setVendedor(vendedor);
-        pedido.setComentarios(comentarios);
-
+        
         pedidoRepository.save(pedido);
 
     }
