@@ -1,6 +1,5 @@
 package com.okta.aycPedidos.entidades;
 
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,8 +20,11 @@ public class Usuario {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+	
     private String username;
+    
     private String password;
+    
     private String mail;
 	
     @Enumerated(EnumType.STRING)
