@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.okta.aycPedidos.enums.Estado;
+
 import lombok.Data;
 
 @Data
@@ -29,7 +31,7 @@ public class Pedido {
     
     
     @Enumerated(EnumType.STRING)
-    private Pedido estado;
+    private Estado estado;
 
     @OneToOne
     private Agenda agenda;

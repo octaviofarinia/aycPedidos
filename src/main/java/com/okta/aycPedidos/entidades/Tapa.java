@@ -28,7 +28,6 @@ public class Tapa {
 	private String customFrase;
 	
 	@ManyToMany
-	private List<Imagen> imagenesCustom;
-
+	private List<Imagen> customImagenes;
 	
 }

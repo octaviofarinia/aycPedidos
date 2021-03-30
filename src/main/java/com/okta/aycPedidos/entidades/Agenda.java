@@ -23,7 +23,7 @@ public class Agenda {
 	private String id;
 
 	@Enumerated(EnumType.STRING)
-	private CodigoInterior codigo;
+	private CodigoInterior codigoInterior;
 
 	@OneToOne
 	private Tapa tapa;

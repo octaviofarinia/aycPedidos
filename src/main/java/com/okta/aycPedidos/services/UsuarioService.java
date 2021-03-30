@@ -61,8 +61,7 @@ public class UsuarioService implements UserDetailsService {
         Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
         if (respuesta.isPresent()) {
-
-        	Usuario usuario = new Usuario();
+        	Usuario usuario = respuesta.get();
 
             usuario.setUsername(username);
             
@@ -76,7 +75,6 @@ public class UsuarioService implements UserDetailsService {
             usuario.setFechaModificacion(new Date());
 
             usuarioRepository.save(usuario);
-
         } else {
             throw new Exception("No se encontro el usuario");
         }
@@ -84,7 +82,7 @@ public class UsuarioService implements UserDetailsService {
     }
 	
 	@Transactional
-    public void softDeleteUsuario(String id) throws Exception {
+    public void hardDeleteUsuario(String id) throws Exception {
 
         Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
@@ -100,7 +98,7 @@ public class UsuarioService implements UserDetailsService {
     }
 	
 	@Transactional
-    public void hardDeleteUsuario(String id) throws Exception {
+    public void softDeleteUsuario(String id) throws Exception {
 
         Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
