@@ -1,5 +1,6 @@
 package com.okta.aycPedidos.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +26,31 @@ public class TapaService {
 	@Transactional
 	public Tapa registrarTapa(String codigoFondo, String codigoFrase, MultipartFile imagenMultipartFile,
 			String customFrase) throws Exception {
+
 		Tapa tapa = new Tapa();
 
-		tapa.setCodigoFondo(codigoFondo);
+		try {
 
-		tapa.setCodigoFrase(codigoFrase);
+			tapa.setCodigoFondo(codigoFondo);
 
-		if (!customFrase.isEmpty() || customFrase != null) {
-			tapa.setCustomFrase(customFrase);
+			tapa.setCodigoFrase(codigoFrase);
+
+			if (!customFrase.isEmpty() || customFrase != null) {
+				tapa.setCustomFrase(customFrase);
+			}
+
+			Imagen imagen = imagenService.guardar(imagenMultipartFile);
+
+			List<Imagen> imagenesCustom = new ArrayList<Imagen>();
+			tapa.setCustomImagenes(imagenesCustom);
+			imagenesCustom.add(imagen);
+			tapa.setCustomImagenes(imagenesCustom);
+
+			tapaRepository.save(tapa);
+
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
 		}
-
-		this.agregarImagenCustom(tapa.getId(), imagenMultipartFile);
-
-		tapaRepository.save(tapa);
 
 		return tapa;
 	}
@@ -72,7 +85,7 @@ public class TapaService {
 
 	@Transactional
 	public void agregarImagenCustom(String idTapa, MultipartFile imagenMultipartFile) throws Exception {
-		Tapa tapa = new Tapa();
+		Tapa tapa = tapaRepository.getOne(idTapa);
 
 		Imagen imagen = imagenService.guardar(imagenMultipartFile);
 
@@ -80,6 +93,7 @@ public class TapaService {
 		imagenesCustom.add(imagen);
 
 		tapa.setCustomImagenes(imagenesCustom);
+		tapaRepository.save(tapa);
 	}
 
 }

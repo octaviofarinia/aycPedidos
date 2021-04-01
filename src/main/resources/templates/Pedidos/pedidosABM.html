@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyC Pedidos</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="navbar__container">
+            <div class="logo">Logo</div>
+            <div class="navbar__list-container">
+                <ul class="navbar__list">
+                    <li class="navbar__list-item">Nuevo Pedido</li>
+                    <li class="navbar__list-item">Listado de Pedidos</li>
+                </ul>
+            </div>
+        </div>
+        <h1>PEDIDOS ABM</h1>
+        <hr>
+        <h3>CARGAR NUEVO PEDIDO</h3>
+        <h5 th:if="${error !=null}" th:text="${error}" style="color: red;"></h5>
+        <!-- FORMULARIO -->
+        <div class="form-container">
+            <form id="nuevo-pedido" action="/registrarPedido" method="POST" enctype="multipart/form-data">
+                <h2 class="agenda-section">Nombre</h2>
+                <div class="client-name">
+                    <label for="client-name">Cliente</label>
+                    <div th:unless="${nombreCliente!=null}">
+                        <input type="text" id="client-name" name="nombreCliente" placeholder="Nombre del Cliente"
+                            required>
+                    </div>
+                    <div th:if="${nombreCliente!=null}">
+                        <input type="text" id="client-name" name="nombreCliente" th:placeholder="${nombreCliente}"
+                            required>
+                    </div>
+                </div>
+                <h2 class="agenda-section">Interior</h2>
+                <div class="select">
+                    <label for="codigoInterior">Codigo Interior</label>
+                    <input list="lista" name="codigoInterior" id="codigoInterior" required>
+                    <datalist id="lista" style="display: none;">
+                        <div th:each="codigo: ${codigosInterior}">
+                            <div>
+                                <option th:text="${codigo}">
+                                </option>
+                            </div>
+                        </div>
+                    </datalist>
+                </div>
+                <!-- TAPA -->
+                <h2 class="agenda-seccion">Tapa</h2>
+                <div class="select">
+                    <label for="tapa-fondo">Codigo de Fondo</label>
+                    <input type="text" id="tapa-fondo" name="codigoFondoTapa" placeholder="Ingresar codigo de fondo"
+                        required>
+                </div>
+                <div class="tapa-personal">
+                    <label for="tapa__personal">Tapa Personalizada</label>
+                    <!--Fondo Custom Tapa-->
+                    <input type="file" id="tapa-personal" name="customFondoTapa">
+                </div>
+                <div class="select">
+                    <label for="tapa-frase">Codigo de Frase</label>
+                    <input type="text" id="tapa-frase" name="codigoFraseTapa" placeholder="Ingresar codigo de frase"
+                        required>
+                </div>
+                <div class="tapa-frase__personal">
+                    <label for="tapa-frase__personal">Frase Personalizada</label>
+                    <input type="text" id="tapa-frase__personal" name="customFraseTapa" placeholder="agregar frase">
+                </div>
+                <!-- TAPA -->
+                <h2 class="agenda-seccion">Contratapa</h2>
+                <div class="select">
+                    <label for="contratapa-fondo">Codigo de Fondo</label>
+                    <input type="text" id="contratapa-fondo" name="codigoFondoContratapa"
+                        placeholder="Ingresar codigo de fondo" required>
+                </div>
+                <div class="contratapa__personal">
+                    <label for="contratapa__personal">Contratapa Personalizada</label>
+                    <!--Fondo Custom Contratapa-->
+                    <input type="file" id="contratapa__personal" name="customFondoContratapa">
+                </div>
+                <div class="select">
+                    <label for="contratapa-frase">Codigo de Frase</label>
+                    <input type="text" id="contratapa-frase" name="codigoFraseContratapa"
+                        placeholder="Ingresar codigo de frase" required>
+                </div>
+                <div class="contratapa-frase__personal">
+                    <label for="contratapa-frase__personal">Frase Personalizada</label>
+                    <input type="text" id="contratapa-frase__personal" name="customFraseContratapa"
+                        placeholder="agregar frase">
+                </div>
+                <div class="quatity">
+                    <h2 class="agenda-seccion">Cantidad</h2>
+                    <label for="cantidad">Cantidad de Agendas</label>
+                    <input type="number" id="cantidad" name="cantidad" required>
+                </div>
+                <div class="textarea">
+                    <h2 class="agenda-seccion">Comentario</h2>
+                    <textarea class="comentarios" id="comentarios" name="comentario"
+                        placeholder="Agregar comentario aqui..."></textarea>
+                </div>
+                <div class="submit-btn">
+                    <button type="submit" id="submit">Ingresar Pedido</button>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <h3>Listar Pedidos</h3>
+        <div th:each="pedido : ${pedidos}">
+            <hr>
+            <p>Id: <span th:text="${pedido.id}"></span><br></p>
+            <p>Nombre Cliente: <span th:text="${pedido.nombreCliente}"></span><br></p>
+            <hr>
+        </div>
+    </div>
+</body>
+
+</html>

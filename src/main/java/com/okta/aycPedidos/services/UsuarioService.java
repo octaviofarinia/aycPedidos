@@ -157,5 +157,10 @@ public class UsuarioService implements UserDetailsService {
 			return null;
 		}
 	}
+	
+	@Transactional
+	public Usuario buscarPorUsername(String username) {
+		return usuarioRepository.buscarPorUsername(username);
+	}
 
 }

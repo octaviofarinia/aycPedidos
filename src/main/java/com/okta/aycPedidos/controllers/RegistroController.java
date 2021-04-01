@@ -21,7 +21,6 @@ public class RegistroController {
 	@Autowired
     private UsuarioService usuarioService;
 	
-	
 	@GetMapping("/registro")
     public String registro(ModelMap modelo) {
 		Set<Rol> userRoles = EnumSet.allOf(Rol.class);
