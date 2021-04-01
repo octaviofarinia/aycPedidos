@@ -19,13 +19,10 @@ public class InicioController {
 	@Autowired
     private HttpSession session;
     
-    @Autowired
-    private UsuarioService usuarioService;
-    
     @PreAuthorize("hasRole('ROLE_ADMIN')||hasRole('ROLE_VENDEDOR')||hasRole('ROLE_DISENADOR')")
     @GetMapping("/inicio")
     public String inicio(ModelMap modelo) {
-        Usuario usuario = usuarioService.buscarPorUsername(((Usuario) session.getAttribute("usuarioSession")).getUsername());
+    	Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
         
         modelo.put("nombre", usuario.getUsername());
         modelo.put("rol", usuario.getRol().toString());

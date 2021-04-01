@@ -13,23 +13,40 @@ import com.okta.aycPedidos.services.UsuarioService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled=true)
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
-	@Autowired
+	@Autowired	
 	public UsuarioService usuarioService;
-
+	
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(usuarioService).passwordEncoder(new BCryptPasswordEncoder());
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(usuarioService).
+		passwordEncoder(new BCryptPasswordEncoder());
 	}
-
+	
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/css/", "/js/", "/img/*").permitAll().and().formLogin()
-				.loginPage("/login").loginProcessingUrl("/logincheck").usernameParameter("mail")
-				.passwordParameter("password").defaultSuccessUrl("/inicio").failureUrl("/login?error=error").permitAll()
-				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/").permitAll().and().csrf().disable();
+		http
+			.authorizeRequests()
+
+				.antMatchers("/css/", "/js/", "/img/*").permitAll()
+				.and().formLogin()
+					.loginPage("/login")
+						.loginProcessingUrl("/logincheck")
+						.usernameParameter("mail")
+						.passwordParameter("password")
+						.defaultSuccessUrl("/inicio")
+						.failureUrl("/login?error=error")
+						.permitAll()
+				.and().logout()
+					.logoutUrl("/logout")
+					.logoutSuccessUrl("/")
+					.permitAll()
+				.and().csrf()
+					.disable();
 	}
+	
 
 }

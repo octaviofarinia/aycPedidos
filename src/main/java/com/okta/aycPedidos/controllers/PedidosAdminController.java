@@ -65,7 +65,6 @@ public class PedidosAdminController {
 			@RequestParam(required = true) String customFraseContratapa) {
 		
 		try {
-			
 			pedidoService.registrarPedido(Integer.parseInt(cantidad), nombreCliente, 
 					//Estado
 					"PENDIENTE", 
@@ -86,18 +85,6 @@ public class PedidosAdminController {
 			
 		}catch(Exception ex) {
 			System.err.println(ex.getMessage());
-			modelo.put("cantidad", cantidad);
-			modelo.put("nombreCliente", nombreCliente);
-			modelo.put("codigoInterior", codigoInterior);
-			modelo.put("comentario", comentario);
-			modelo.put("codigoFondoTapa", customFraseTapa);
-			modelo.put("customFondoTapa", customFraseTapa);
-			modelo.put("codigoFraseTapa", customFraseTapa);
-			modelo.put("customFraseTapa", customFraseTapa);
-			modelo.put("codigoFondoContratapa", customFraseContratapa);
-			modelo.put("customFondoContratapa", customFraseContratapa);
-			modelo.put("codigoFraseContratapa", customFraseContratapa);
-			modelo.put("customFraseContratapa", customFraseContratapa);
 			modelo.put("error", ex.getMessage());
 			return this.pedidosABM(modelo);
 		}

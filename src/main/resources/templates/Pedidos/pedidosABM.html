@@ -29,14 +29,8 @@
                 <h2 class="agenda-section">Nombre</h2>
                 <div class="client-name">
                     <label for="client-name">Cliente</label>
-                    <div th:unless="${nombreCliente!=null}">
-                        <input type="text" id="client-name" name="nombreCliente" placeholder="Nombre del Cliente"
-                            required>
-                    </div>
-                    <div th:if="${nombreCliente!=null}">
-                        <input type="text" id="client-name" name="nombreCliente" th:placeholder="${nombreCliente}"
-                            required>
-                    </div>
+                    <input type="text" id="client-name" name="nombreCliente" placeholder="Ingrese el nombre del cliente"
+                        required>
                 </div>
                 <h2 class="agenda-section">Interior</h2>
                 <div class="select">
