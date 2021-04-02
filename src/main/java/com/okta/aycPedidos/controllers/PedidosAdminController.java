@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.okta.aycPedidos.entidades.Pedido;
+import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.CodigoInterior;
 import com.okta.aycPedidos.services.AgendaService;
 import com.okta.aycPedidos.services.PedidoService;
@@ -34,15 +35,20 @@ public class PedidosAdminController {
 	@Autowired
 	private TapaService tapaService;
 	
+	@Autowired
+	private UsuarioService usuarioService;
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/pedidosABM")
     public String pedidosABM(ModelMap modelo) {
-		
 		Set<CodigoInterior> codigosInterior = EnumSet.allOf(CodigoInterior.class);
         modelo.put("codigosInterior", codigosInterior);
-		
+        
         List<Pedido> pedidos = pedidoService.listarPedidosActivos();
         modelo.put("pedidos", pedidos);
+        
+        List<Usuario> usuarios = usuarioService.listarUsuariosActivos();
+        modelo.put("usuarios", usuarios);
         
         return "/Pedidos/pedidosABM.html";
     }
@@ -52,26 +58,28 @@ public class PedidosAdminController {
 			@RequestParam(required = true) String cantidad,
 			@RequestParam(required = true) String nombreCliente,
 			@RequestParam(required = true) String codigoInterior,
-			@RequestParam(required = true) String comentario,
+			@RequestParam(required = true) String descripcion,
+			@RequestParam(required = true) String vendedorId,
+			@RequestParam(required = true) String disenadorId,
 			//TAPA
 			@RequestParam(required = true) String codigoFondoTapa,
-			@RequestParam(required = true) MultipartFile customFondoTapa,
+			@RequestParam() MultipartFile customFondoTapa,
 			@RequestParam(required = true) String codigoFraseTapa,
-			@RequestParam(required = true) String customFraseTapa,
+			@RequestParam() String customFraseTapa,
 			//CONTRATAPA
 			@RequestParam(required = true) String codigoFondoContratapa,
-			@RequestParam(required = true) MultipartFile customFondoContratapa,
+			@RequestParam() MultipartFile customFondoContratapa,
 			@RequestParam(required = true) String codigoFraseContratapa,
-			@RequestParam(required = true) String customFraseContratapa) {
+			@RequestParam() String customFraseContratapa) {
 		
 		try {
-			pedidoService.registrarPedido(Integer.parseInt(cantidad), nombreCliente, 
+			pedidoService.registrarPedido(descripcion, Integer.parseInt(cantidad), nombreCliente, 
 					//Estado
 					"PENDIENTE", 
 					//Vendedor
-					null, 
+					vendedorId, 
 					//Disenador
-					null, 
+					disenadorId, 
 					//Muestra
 					null, 
 					//Agenda
@@ -91,33 +99,25 @@ public class PedidosAdminController {
 	
 	@PostMapping("/hardDeletePedido")
 	public String hardDeletePedido(ModelMap modelo, String pedidoId) {
-		
 		try {
-			
 			pedidoService.hardDeletePedido(Long.parseLong(pedidoId));
-			
 		}catch(Exception ex) {
 			System.err.println(ex.getMessage());
 			modelo.put("error", ex.getMessage());
 			return this.pedidosABM(modelo);
 		}
-		
 		return "redirect:/pedidosABM";
 	}
 	
 	@PostMapping("/softDeletePedido")
 	public String softDeletePedido(ModelMap modelo, String pedidoId) {
-		
 		try {
-			
 			pedidoService.softDeletePedido(Long.parseLong(pedidoId));
-			
 		}catch(Exception ex) {
 			System.err.println(ex.getMessage());
 			modelo.put("error", ex.getMessage());
 			return this.pedidosABM(modelo);
 		}
-		
 		return "redirect:/pedidosABM";
 	}
 }

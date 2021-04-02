@@ -94,12 +94,31 @@
                     <input type="number" id="cantidad" name="cantidad" required>
                 </div>
                 <div class="textarea">
-                    <h2 class="agenda-seccion">Comentario</h2>
-                    <textarea class="comentarios" id="comentarios" name="comentario"
-                        placeholder="Agregar comentario aqui..."></textarea>
+                    <h2 class="agenda-seccion">Descripcion</h2>
+                    <textarea class="descripcion" name="descripcion"
+                        placeholder="Agregar una descripcion aqui..."></textarea>
                 </div>
+                <h5>Asignar Vendedor</h5>
+                <select name="vendedorId">
+                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:if="${usuario.rol == T(com.okta.aycPedidos.enums.Rol).VENDEDOR}">
+                        <div>
+                            <span>Nombre:</span>
+                            <span th:text="${usuario.username}"></span>
+                        </div>
+                    </option>
+                </select>
+                <h5>Asignar Diseñador</h5>
+                <select name="disenadorId">
+                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:if="${usuario.rol == T(com.okta.aycPedidos.enums.Rol).DISENADOR}">
+                        <div>
+                            <span>Nombre:</span>
+                            <span th:text="${usuario.username}"></span>
+                        </div>
+                    </option>
+                </select>
+                <br>
                 <div class="submit-btn">
-                    <button type="submit" id="submit">Ingresar Pedido</button>
+                    <button type="submit" id="submit">Enviar Pedido</button>
                 </div>
             </form>
         </div>
@@ -107,8 +126,10 @@
         <h3>Listar Pedidos</h3>
         <div th:each="pedido : ${pedidos}">
             <hr>
-            <p>Id: <span th:text="${pedido.id}"></span><br></p>
+            <p><a th:href="@{/pedidoInfo/{pedidoId}(pedidoId=${pedido.id})}">Id: <span
+                        th:text="${pedido.id}"></span></a><br></p>
             <p>Nombre Cliente: <span th:text="${pedido.nombreCliente}"></span><br></p>
+            <p>Fecha: <span th:text="${pedido.fechaAlta}"></span><br></p>
             <form action="/hardDeletePedido" method="POST">
                 <input type="hidden" name="pedidoId" th:value="${pedido.id}">
                 <button type="submit">Eliminar</button>

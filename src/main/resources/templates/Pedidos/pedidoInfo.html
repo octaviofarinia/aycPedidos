@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AyC Pedidos</title>
 </head>
 
 <body>
@@ -14,8 +14,8 @@
             <div class="logo">Logo</div>
             <div class="navbar__list-container">
                 <ul class="navbar__list">
-                    <li class="navbar__list-item">Nuevo Pedido</li>
-                    <li class="navbar__list-item">Listado de Pedidos</li>
+                    <li class="navbar__list-item">Inicio</li>
+                    <li class="navbar__list-item">Pedidos ABM</li>
                 </ul>
             </div>
         </div>
@@ -23,6 +23,14 @@
             <div class="label">
                 # Pedido:
                 <span class="returned-value" th:text="${pedido.id}"></span>
+            </div>
+            <div class="label">
+                Vendedor:
+                <span class="returned-value" th:text="${pedido.vendedor.username}"></span>
+            </div>
+            <div class="label">
+                Diseñador:
+                <span class="returned-value" th:text="${pedido.disenador.username}"></span>
             </div>
             <div class="label">
                 Cantidad:
@@ -42,19 +50,30 @@
             </div>
             <div class="label">
                 Tapa:
-                <img class="returned-image" >
+                <br>
+                <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
+                    th:src="@{'data:/'+${tapaImagen.mime}+';base64,'+${tapaImagen.getImgData()}}">
+                    <br>
                 <a href="#">Descargar Imagen</a>
             </div>
             <div class="label">
                 Contratapa:
-                <img class="returned-image" >
+                <br>
+                <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
+                    th:src="@{'data:/'+${contratapaImagen.mime}+';base64,'+${contratapaImagen.getImgData()}}">
+                    <br>
                 <a href="#">Descargar Imagen</a>
             </div>
+            <div class="label">
+                Descripcion:
+                <span class="returned-value" th:text="${descripcion.contenido}"></span>
+            </div>
+            <hr>
             <p class="label">Comunicaciones:</p>
-            <div class="dialog" >
-                <span class="date" >03 Enero, 2021</span>
-                Commentario:
-                <p >blah blah blah</p>
+            <div th:each="comentario : ${comentarios}"    class="dialog">
+                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"> - </span><span th:text="${comentario.fechaAlta}"></span></p>
+                <p><span th:text="${comentario.contenido}"></span></p>
+                <hr>
             </div>
 
         </div>

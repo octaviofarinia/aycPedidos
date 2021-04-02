@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.okta.aycPedidos.entidades.Agenda;
+import com.okta.aycPedidos.entidades.Comentario;
 import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Estado;
+import com.okta.aycPedidos.enums.TipoComentario;
 import com.okta.aycPedidos.repositories.AgendaRepository;
 import com.okta.aycPedidos.repositories.PedidoRepository;
+import com.okta.aycPedidos.repositories.UsuarioRepository;
 
 @Service
 public class PedidoService {
@@ -25,14 +28,17 @@ public class PedidoService {
 	private PedidoRepository pedidoRepository;
 
 	@Autowired
-	private ImagenService imagenService;
-	
+	private UsuarioRepository usuarioRepository;
+
 	@Autowired
-	private AgendaService agendaService;
+	private ImagenService imagenService;
+
+	@Autowired
+	private ComentarioService comentarioService;
 
 	@Transactional
-	public void registrarPedido(Integer cantidad, String nombreCliente, String estado, Usuario vendedor,
-			Usuario disenador, MultipartFile imagenMultipartFile, Agenda agenda) throws Exception {
+	public void registrarPedido(String descripcion, Integer cantidad, String nombreCliente, String estado,
+			String vendedorId, String disenadorId, MultipartFile imagenMultipartFile, Agenda agenda) throws Exception {
 
 		Pedido pedido = new Pedido();
 
@@ -46,17 +52,10 @@ public class PedidoService {
 
 			pedido.setAgenda(agenda);
 
-			if (vendedor != null) {
-				pedido.setVendedor(vendedor);
-			} else {
-				pedido.setVendedor(null);
-			}
+			Usuario vendedor = usuarioRepository.getOne(vendedorId);
+			pedido.setVendedor(vendedor);
 
-			if (disenador != null) {
-				pedido.setDisenador(disenador);
-			} else {
-				pedido.setDisenador(null);
-			}
+			pedido.setDisenador(usuarioRepository.getOne(disenadorId));
 
 			pedido.setFechaAlta(new Date());
 
@@ -72,7 +71,8 @@ public class PedidoService {
 			}
 
 			pedidoRepository.save(pedido);
-			
+			comentarioService.registrarComentario(pedido, vendedor, descripcion, TipoComentario.DESCRIPCION);
+
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -103,7 +103,7 @@ public class PedidoService {
 			pedido.setFechaModificacion(new Date());
 
 			this.agregarPreview(pedidoId, imagenMultipartFile);
-			
+
 			pedidoRepository.save(pedido);
 		} else {
 			throw new Exception("No se encontro el pedido");
@@ -113,6 +113,11 @@ public class PedidoService {
 
 	@Transactional
 	public void hardDeletePedido(Long pedidoId) throws Exception {
+		List<Comentario> comentarios = comentarioService.listarTodosLosComentariosPorPedido(pedidoRepository.getOne(pedidoId));
+		for (Comentario comentario : comentarios) {
+			comentarioService.hardDeleteComentario(comentario.getId());
+		}
+		comentarios.clear();
 		pedidoRepository.deleteById(pedidoId);
 	}
 
@@ -147,8 +152,7 @@ public class PedidoService {
 	public Pedido getOneById(Long pedidoId) {
 		return pedidoRepository.getOne(pedidoId);
 	}
-	
-	
+
 	@Transactional
 	public List<Pedido> listarPedidosActivos() {
 		return pedidoRepository.listarPedidosActivos();

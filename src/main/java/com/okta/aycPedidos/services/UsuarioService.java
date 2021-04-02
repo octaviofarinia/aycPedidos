@@ -163,4 +163,9 @@ public class UsuarioService implements UserDetailsService {
 		return usuarioRepository.buscarPorUsername(username);
 	}
 
+	@Transactional
+	public List<Usuario> listarUsuariosActivos() {
+		return usuarioRepository.listarUsuariosActivos();
+	}
+	
 }
