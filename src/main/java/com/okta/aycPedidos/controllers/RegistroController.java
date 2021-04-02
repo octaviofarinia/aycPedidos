@@ -1,9 +1,8 @@
 package com.okta.aycPedidos.controllers;
 
-import com.okta.aycPedidos.enums.Rol;
-import com.okta.aycPedidos.services.UsuarioService;
 import java.util.EnumSet;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,41 +11,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- *
- * @author octav
- */
+import com.okta.aycPedidos.enums.Rol;
+import com.okta.aycPedidos.services.UsuarioService;
+
 @Controller
 @RequestMapping("/")
 public class RegistroController {
 
-    @Autowired
+	@Autowired
     private UsuarioService usuarioService;
-
-    @GetMapping("/registro_usuario")
-    public String registroCliente(ModelMap modelo) {
-        
-        Set<Rol> userRoles = EnumSet.allOf(Rol.class);
+	
+	@GetMapping("/registro")
+    public String registro(ModelMap modelo) {
+		Set<Rol> userRoles = EnumSet.allOf(Rol.class);
         modelo.put("roles", userRoles);
-        
-        return "registro_usuario.html";
+        return "registro.html";
     }
-
-    @PostMapping("/registrar_usuario")
-    public String registrarCliente(ModelMap modelo,
+	
+	@PostMapping("/registrarUsuario")
+    public String registrarUsuario(ModelMap modelo,
             @RequestParam(required = true) String username,
             @RequestParam(required = true) String password,
             @RequestParam(required = true) String mail,
             @RequestParam(required = true) String repeated_password,
-            @RequestParam(required = true) String rol) throws Exception {
-
-        try {
-            usuarioService.registrarUsuario(username, mail, password, repeated_password, Rol.valueOf(rol));
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            return this.registroCliente(modelo);
-        }
+            @RequestParam(required = true) String rol) throws Exception{
+		
+		try {
+			usuarioService.registrarUsuario(username, mail, password, repeated_password, Rol.valueOf(rol));
+		}catch(Exception ex) {
+			modelo.put("error", ex.getMessage());
+			return "redirect:/login";
+		}
+		
         return "redirect:/login";
     }
-
+	
 }

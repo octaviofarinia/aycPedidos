@@ -1,50 +1,62 @@
 package com.okta.aycPedidos.services;
 
-import com.okta.aycPedidos.entities.Agenda;
-import com.okta.aycPedidos.entities.Tapa;
-import com.okta.aycPedidos.enums.CodigoProducto;
-import com.okta.aycPedidos.repositories.AgendaRepository;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author octav
- */
+import com.okta.aycPedidos.entidades.Agenda;
+import com.okta.aycPedidos.entidades.Tapa;
+import com.okta.aycPedidos.enums.CodigoInterior;
+import com.okta.aycPedidos.repositories.AgendaRepository;
+
 @Service
 public class AgendaService {
 
-    @Autowired
-    private TapaService tapaService;
+	@Autowired
+	private AgendaRepository agendaRepository;
 
-    @Autowired
-    private AgendaRepository agendaRepository;
+	@Transactional
+	public Agenda registrarAgenda(String codigoInterior, Tapa tapa, Tapa contratapa) {
 
-    @Transactional
-    public void registrarAgenda(String codigo, Tapa tapa, Tapa contratapa) {
-        Agenda agenda = new Agenda();
+		Agenda agenda = new Agenda();
 
-        agenda.setCodigo(CodigoProducto.valueOf(codigo));
-        agenda.setTapa(tapa);
-        agenda.setContratapa(contratapa);
+		try {
 
-        agendaRepository.save(agenda);
-    }
+			agenda.setCodigoInterior(CodigoInterior.valueOf(codigoInterior));
 
-    @Transactional
-    public void modificarAgenda(Long idAgenda, String codigo, Tapa tapa, Tapa contratapa) {
-        Agenda agendaModificada = agendaRepository.getOne(idAgenda);
+			agenda.setTapa(tapa);
 
-        agendaModificada.setCodigo(CodigoProducto.valueOf(codigo));
-        agendaModificada.setTapa(tapa);
-        agendaModificada.setContratapa(contratapa);
+			agenda.setContratapa(contratapa);
 
-        agendaRepository.save(agendaModificada);
-    }
+			agendaRepository.save(agenda);
 
-    @Transactional
-    public void eliminarAgenda(Long idAgenda) {
-        agendaRepository.deleteById(idAgenda);
-    }
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+		}
+
+		return agenda;
+	}
+
+	@Transactional
+	public void modificarAgenda(String agendaId, String codigoInterior, Tapa tapa, Tapa contratapa) {
+
+		Optional<Agenda> respuesta = agendaRepository.findById(agendaId);
+
+		if (respuesta.isPresent()) {
+			Agenda agendaModificada = respuesta.get();
+
+			agendaModificada.setCodigoInterior(CodigoInterior.valueOf(codigoInterior));
+
+			agendaModificada.setTapa(tapa);
+
+			agendaModificada.setContratapa(contratapa);
+
+			agendaRepository.save(agendaModificada);
+		}
+
+	}
+
 }

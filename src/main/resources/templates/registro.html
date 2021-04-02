@@ -9,13 +9,19 @@
 </head>
 
 <body>
-    <h1>LOGIN</h1>
-    <hr>
-    <form action="/logincheck" method="post">
+    <h1>REGISTRO</h1>
+    <form action="/registrarUsuario" method="post">
+        <label for="username">Usuario</label>
+        <input type="text" placeholder="ingrese el nombre de usuario" class="form-control" name="username">
         <label for="mail">Mail</label>
         <input type="mail" placeholder="ingrese el mail" class="form-control" name="mail">
         <label for="password">Contraseña</label>
         <input type="password" placeholder="ingrese su contraseña" class="form-control" name="password">
+        <input type="password" placeholder="repita la contraseña" class="form-control" name="repeated_password">
+        <select class="custom-select" name="rol">
+            <option selected>Rol</option>
+            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
+        </select>
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 </body>

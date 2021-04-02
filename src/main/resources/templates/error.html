@@ -9,12 +9,11 @@
 </head>
 
 <body>
-    <h1>INICIO</h1>
-    <hr>
-    <p>Estas adentro: <span th:text="${nombre} + ' - ' + ${rol}"></span></p>
+    <h2 class="display-4" th:text="${codigo}"></h2>
+
+    <h3 class="diplay-4" th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}"></h3>
     <br>
-    <a href="/pedidosABM">PEDIDOS ABM</a>
-    <a href="/logout">SALIR</a>
+    <a href="/inicio">VOLVER</a>
 </body>
 
 </html>

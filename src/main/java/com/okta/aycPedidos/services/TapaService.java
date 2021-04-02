@@ -1,46 +1,94 @@
 package com.okta.aycPedidos.services;
 
-import com.okta.aycPedidos.entities.Tapa;
-import com.okta.aycPedidos.repositories.TapaRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author octav
- */
+import com.okta.aycPedidos.entidades.Imagen;
+import com.okta.aycPedidos.entidades.Tapa;
+import com.okta.aycPedidos.repositories.TapaRepository;
+
 @Service
 public class TapaService {
 
-    @Autowired
-    private TapaRepository tapaRepository;
+	@Autowired
+	private TapaRepository tapaRepository;
+	@Autowired
+	private ImagenService imagenService;
 
-    @Transactional
-    public void registrarTapa(Integer codigoFondo, Integer codigoFrase, String nombre) {
-        Tapa tapa = new Tapa();
+	// De momento solo registra una imagen en customFondos
+	@Transactional
+	public Tapa registrarTapa(String codigoFondo, String codigoFrase, MultipartFile imagenMultipartFile,
+			String customFrase) throws Exception {
 
-        tapa.setCodigoFondo(codigoFondo);
-        tapa.setCodigoFrase(codigoFrase);
-        tapa.setNombre(nombre);
+		Tapa tapa = new Tapa();
 
-        tapaRepository.save(tapa);
-    }
+		try {
 
-    @Transactional
-    public void modificarTapa(Long idTapa, Integer codigoFondo, Integer codigoFrase, String nombre) {
-        Tapa modificada = tapaRepository.getOne(idTapa);
+			tapa.setCodigoFondo(codigoFondo);
 
-        modificada.setCodigoFondo(codigoFondo);
-        modificada.setCodigoFrase(codigoFrase);
-        modificada.setNombre(nombre);
+			tapa.setCodigoFrase(codigoFrase);
 
-        tapaRepository.save(modificada);
-    }
+			if (!customFrase.isEmpty() || customFrase != null) {
+				tapa.setCustomFrase(customFrase);
+			}
 
-    @Transactional
-    public void eliminarTapa(Long idTapa) {
-        tapaRepository.deleteById(idTapa);
-    }
+			Imagen imagen = imagenService.guardar(imagenMultipartFile);
+
+			List<Imagen> imagenesCustom = new ArrayList<Imagen>();
+			tapa.setCustomImagenes(imagenesCustom);
+			imagenesCustom.add(imagen);
+			tapa.setCustomImagenes(imagenesCustom);
+
+			tapaRepository.save(tapa);
+
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+		}
+
+		return tapa;
+	}
+
+	// No modifica las imagenes
+	@Transactional
+	public void modificarTapa(String idTapa, String codigoFondo, String codigoFrase, String customFrase) {
+
+		Optional<Tapa> respuesta = tapaRepository.findById(idTapa);
+
+		if (respuesta.isPresent()) {
+			Tapa modificada = tapaRepository.getOne(idTapa);
+
+			if (!codigoFondo.isEmpty() || codigoFondo != null) {
+				modificada.setCodigoFondo(codigoFondo);
+			}
+			if (!codigoFrase.isEmpty() || codigoFrase != null) {
+				modificada.setCodigoFrase(codigoFrase);
+			}
+			if (!customFrase.isEmpty() || customFrase != null) {
+				modificada.setCustomFrase(customFrase);
+			}
+
+			tapaRepository.save(modificada);
+		}
+	}
+
+	@Transactional
+	public void agregarImagenCustom(String idTapa, MultipartFile imagenMultipartFile) throws Exception {
+		Tapa tapa = tapaRepository.getOne(idTapa);
+
+		Imagen imagen = imagenService.guardar(imagenMultipartFile);
+
+		List<Imagen> imagenesCustom = tapa.getCustomImagenes();
+		imagenesCustom.add(imagen);
+
+		tapa.setCustomImagenes(imagenesCustom);
+		tapaRepository.save(tapa);
+	}
 
 }
