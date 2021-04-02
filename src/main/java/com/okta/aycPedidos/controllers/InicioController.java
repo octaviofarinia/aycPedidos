@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.okta.aycPedidos.entidades.Usuario;
-import com.okta.aycPedidos.services.UsuarioService;
 
 @Controller
 @RequestMapping("/")

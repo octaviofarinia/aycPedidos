@@ -1,5 +1,6 @@
 package com.okta.aycPedidos.entidades;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,8 +26,8 @@ public class Agenda {
 	@Enumerated(EnumType.STRING)
 	private CodigoInterior codigoInterior;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Tapa tapa;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Tapa contratapa;
 }

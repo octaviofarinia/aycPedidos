@@ -15,6 +15,7 @@ import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Estado;
+import com.okta.aycPedidos.repositories.AgendaRepository;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 
 @Service
@@ -25,6 +26,9 @@ public class PedidoService {
 
 	@Autowired
 	private ImagenService imagenService;
+	
+	@Autowired
+	private AgendaService agendaService;
 
 	@Transactional
 	public void registrarPedido(Integer cantidad, String nombreCliente, String estado, Usuario vendedor,
@@ -108,7 +112,7 @@ public class PedidoService {
 	}
 
 	@Transactional
-	public void hardDeletePedido(Long pedidoId) {
+	public void hardDeletePedido(Long pedidoId) throws Exception {
 		pedidoRepository.deleteById(pedidoId);
 	}
 
@@ -144,8 +148,9 @@ public class PedidoService {
 		return pedidoRepository.getOne(pedidoId);
 	}
 	
+	
 	@Transactional
-	public List<Pedido> listarPedidos() {
-		return pedidoRepository.findAll();
+	public List<Pedido> listarPedidosActivos() {
+		return pedidoRepository.listarPedidosActivos();
 	}
 }

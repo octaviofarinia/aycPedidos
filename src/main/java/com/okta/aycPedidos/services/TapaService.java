@@ -79,11 +79,6 @@ public class TapaService {
 	}
 
 	@Transactional
-	public void eliminarTapa(String idTapa) {
-		tapaRepository.deleteById(idTapa);
-	}
-
-	@Transactional
 	public void agregarImagenCustom(String idTapa, MultipartFile imagenMultipartFile) throws Exception {
 		Tapa tapa = tapaRepository.getOne(idTapa);
 

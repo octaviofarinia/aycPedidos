@@ -41,7 +41,7 @@ public class PedidosAdminController {
 		Set<CodigoInterior> codigosInterior = EnumSet.allOf(CodigoInterior.class);
         modelo.put("codigosInterior", codigosInterior);
 		
-        List<Pedido> pedidos = pedidoService.listarPedidos();
+        List<Pedido> pedidos = pedidoService.listarPedidosActivos();
         modelo.put("pedidos", pedidos);
         
         return "/Pedidos/pedidosABM.html";
@@ -79,9 +79,38 @@ public class PedidosAdminController {
 							//Tapa
 							tapaService.registrarTapa(codigoFondoTapa, codigoFraseTapa, customFondoTapa, customFraseTapa), 
 							//Contratapa
-							tapaService.registrarTapa(codigoFondoContratapa, codigoFraseContratapa, customFondoContratapa, customFraseContratapa)));
+							tapaService.registrarTapa(codigoFondoContratapa, codigoFraseContratapa, customFondoContratapa, customFraseContratapa)));	
 			
+		}catch(Exception ex) {
+			System.err.println(ex.getMessage());
+			modelo.put("error", ex.getMessage());
+			return this.pedidosABM(modelo);
+		}
+		return "redirect:/pedidosABM";
+	}
+	
+	@PostMapping("/hardDeletePedido")
+	public String hardDeletePedido(ModelMap modelo, String pedidoId) {
+		
+		try {
 			
+			pedidoService.hardDeletePedido(Long.parseLong(pedidoId));
+			
+		}catch(Exception ex) {
+			System.err.println(ex.getMessage());
+			modelo.put("error", ex.getMessage());
+			return this.pedidosABM(modelo);
+		}
+		
+		return "redirect:/pedidosABM";
+	}
+	
+	@PostMapping("/softDeletePedido")
+	public String softDeletePedido(ModelMap modelo, String pedidoId) {
+		
+		try {
+			
+			pedidoService.softDeletePedido(Long.parseLong(pedidoId));
 			
 		}catch(Exception ex) {
 			System.err.println(ex.getMessage());

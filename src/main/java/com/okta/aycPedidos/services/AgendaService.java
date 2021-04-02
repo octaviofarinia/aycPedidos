@@ -15,9 +15,6 @@ import com.okta.aycPedidos.repositories.AgendaRepository;
 @Service
 public class AgendaService {
 
-//	@Autowired
-//  private TapaService tapaService;
-
 	@Autowired
 	private AgendaRepository agendaRepository;
 
@@ -60,11 +57,6 @@ public class AgendaService {
 			agendaRepository.save(agendaModificada);
 		}
 
-	}
-
-	@Transactional
-	public void eliminarAgenda(String idAgenda) {
-		agendaRepository.deleteById(idAgenda);
 	}
 
 }

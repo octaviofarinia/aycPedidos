@@ -2,6 +2,7 @@ package com.okta.aycPedidos.entidades;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -33,7 +34,7 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Agenda agenda;
     
     @ManyToOne
@@ -42,7 +43,7 @@ public class Pedido {
     @ManyToOne
     private Usuario disenador;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Imagen preview;
 	
     @Temporal(TemporalType.DATE)
