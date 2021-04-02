@@ -54,9 +54,9 @@ public class UsuarioService implements UserDetailsService {
     }
 	
 	@Transactional
-    public void modificarUsuario(String id, String username, String mail, String password, String repeatedPass, Rol rol) throws Exception {
+    public void modificarUsuario(String id, String username, String mail, String password, String repeatedPassword, Rol rol) throws Exception {
 
-        validarDatosUsuario(username, mail, password, repeatedPass, rol);
+        validarDatosUsuario(username, mail, password, repeatedPassword, rol);
 
         Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
@@ -161,6 +161,11 @@ public class UsuarioService implements UserDetailsService {
 	@Transactional
 	public Usuario buscarPorUsername(String username) {
 		return usuarioRepository.buscarPorUsername(username);
+	}
+	
+	@Transactional
+	public Usuario buscarPorId(String usuarioId) {
+		return usuarioRepository.getOne(usuarioId);
 	}
 
 	@Transactional

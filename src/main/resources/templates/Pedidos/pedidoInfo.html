@@ -19,6 +19,10 @@
                 </ul>
             </div>
         </div>
+
+        <h1>PEDIDO INFO</h1>
+        <hr>
+
         <div class="order-container">
             <div class="label">
                 # Pedido:
@@ -53,7 +57,7 @@
                 <br>
                 <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
                     th:src="@{'data:/'+${tapaImagen.mime}+';base64,'+${tapaImagen.getImgData()}}">
-                    <br>
+                <br>
                 <a href="#">Descargar Imagen</a>
             </div>
             <div class="label">
@@ -61,7 +65,7 @@
                 <br>
                 <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
                     th:src="@{'data:/'+${contratapaImagen.mime}+';base64,'+${contratapaImagen.getImgData()}}">
-                    <br>
+                <br>
                 <a href="#">Descargar Imagen</a>
             </div>
             <div class="label">
@@ -70,8 +74,9 @@
             </div>
             <hr>
             <p class="label">Comunicaciones:</p>
-            <div th:each="comentario : ${comentarios}"    class="dialog">
-                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"> - </span><span th:text="${comentario.fechaAlta}"></span></p>
+            <div th:each="comentario : ${comentarios}" class="dialog">
+                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"> - </span><span
+                        th:text="${comentario.fechaAlta}"></span></p>
                 <p><span th:text="${comentario.contenido}"></span></p>
                 <hr>
             </div>

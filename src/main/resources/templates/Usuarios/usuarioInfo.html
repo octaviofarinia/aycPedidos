@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyC Pedidos</title>
+</head>
+
+<body>
+
+    <h1>USUARIO INFO</h1>
+    <hr>
+    
+    <div class="order-container">
+        <div class="label">
+            # Id:
+            <span class="returned-value" th:text="${usuario.id}"></span>
+        </div>
+        <div class="label">
+            Nombre:
+            <span class="returned-value" th:text="${usuario.username}"></span>
+        </div>
+        <div class="label">
+            Mail:
+            <span class="returned-value" th:text="${usuario.mail}"></span>
+        </div>
+        <div class="label">
+            Rol:
+            <span class="returned-value" th:text="${usuario.rol}"></span>
+        </div>
+        <div class="label">
+            Fecha Registro:
+            <span class="returned-value" th:text="${usuario.fechaAlta}"></span>
+        </div>
+    </div>
+
+</body>
+
+</html>
