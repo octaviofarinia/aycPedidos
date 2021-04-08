@@ -46,12 +46,12 @@ public class Pedido {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Imagen preview;
 	
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaBaja;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
 }

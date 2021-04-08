@@ -53,7 +53,7 @@ public class ErroresController implements ErrorController{
 	
 	private int getErrorCode(HttpServletRequest httpRequest) {
 		
-		Map mapa = httpRequest.getParameterMap();
+		Map<String, String[]> mapa = httpRequest.getParameterMap();
 		for(Object key : mapa.keySet()) {
 			String[] valores = (String[]) mapa.get(key);
 			for(String valor : valores) {
@@ -71,8 +71,6 @@ public class ErroresController implements ErrorController{
 		
 		return (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
 	}
-	
-	
 	
 	
 	@Override

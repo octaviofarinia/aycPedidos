@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.okta.aycPedidos.entidades.Agenda;
 import com.okta.aycPedidos.entidades.Pedido;
+import com.okta.aycPedidos.entidades.Usuario;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long>{
@@ -18,5 +19,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 	
 	@Query("SELECT p.agenda FROM Pedido p WHERE p.id LIKE :id")
     public Agenda retornarAgenda(@Param("id") Long pedidoId);
+	
+	@Query("SELECT p FROM Pedido p WHERE p.vendedor = :usu OR p.disenador = :usu")
+    public List<Pedido> listarPedidosPorUsuario(@Param("usu") Usuario usuario);
 	
 }

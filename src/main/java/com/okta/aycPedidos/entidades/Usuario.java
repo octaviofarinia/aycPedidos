@@ -35,12 +35,12 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 	
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaBaja;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
 }

@@ -39,7 +39,7 @@
         <p>Nombre Usuario:<a th:href="@{/usuarioInfo/{usuarioId}(usuarioId=${usuario.id})}">
             <span th:text="${usuario.username}"></span></a>  |  Rol: <span th:text="${usuario.rol}"></span><br></p>
         <form action="/hardDeleteUsuario" method="POST">
-            <input type="hidden" name="usurarioId" th:value="${usuario.id}">
+            <input type="hidden" name="usuarioId" th:value="${usuario.id}">
             <button type="submit">Eliminar</button>
         </form>
         <hr>

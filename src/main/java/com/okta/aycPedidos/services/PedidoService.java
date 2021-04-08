@@ -1,3 +1,4 @@
+
 package com.okta.aycPedidos.services;
 
 import java.util.Date;
@@ -17,7 +18,6 @@ import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Estado;
 import com.okta.aycPedidos.enums.TipoComentario;
-import com.okta.aycPedidos.repositories.AgendaRepository;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
 
@@ -156,5 +156,10 @@ public class PedidoService {
 	@Transactional
 	public List<Pedido> listarPedidosActivos() {
 		return pedidoRepository.listarPedidosActivos();
+	}
+	
+	@Transactional
+	public List<Pedido> listarPedidosPorUsuario(Usuario usuario) {
+		return pedidoRepository.listarPedidosPorUsuario(usuario);
 	}
 }

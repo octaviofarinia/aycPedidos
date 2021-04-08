@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Rol;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
@@ -29,6 +30,9 @@ public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private PedidoService pedidoService;
 	
 	@Transactional
     public void registrarUsuario(String username, String mail, String password, String repeatedPass, Rol rol) throws Exception {
@@ -90,6 +94,13 @@ public class UsuarioService implements UserDetailsService {
 
             Usuario usuario = respuesta.get();
 
+            List<Pedido> pedidos = pedidoService.listarPedidosPorUsuario(usuario);
+            
+            for (Pedido pedido : pedidos) {
+				
+            	pedidoService.hardDeletePedido(pedido.getId());
+			}
+            
             usuarioRepository.delete(usuario);
 
         } else {

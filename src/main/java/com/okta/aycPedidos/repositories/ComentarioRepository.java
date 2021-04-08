@@ -16,7 +16,7 @@ public interface ComentarioRepository extends JpaRepository<Comentario, String>{
 	@Query("SELECT c FROM Comentario c WHERE c.pedido LIKE :pedido AND c.tipo LIKE 'DESCRIPCION'")
 	public Comentario buscarDescripcionPorPedido(@Param("pedido") Pedido pedido);
 	
-	@Query("SELECT c FROM Comentario c WHERE c.pedido LIKE :pedido AND c.tipo LIKE 'COMENTARIO'")
+	@Query("SELECT c FROM Comentario c WHERE c.pedido = :pedido AND c.tipo LIKE 'COMENTARIO'")
 	public List<Comentario> listarComentariosPorPedido(@Param("pedido") Pedido pedido);
 	
 	@Query("SELECT c FROM Comentario c WHERE c.pedido LIKE :pedido")

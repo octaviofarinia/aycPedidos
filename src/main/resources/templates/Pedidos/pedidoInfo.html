@@ -72,10 +72,19 @@
             <hr>
             <p class="label">Comunicaciones:</p>
             <div th:each="comentario : ${comentarios}" class="dialog">
-                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"> - </span><span
+                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"></span> - <span
                         th:text="${comentario.fechaAlta}"></span></p>
                 <p><span th:text="${comentario.contenido}"></span></p>
                 <hr>
+            </div>
+            <div>
+                <form action="/registrarComentario" method="POST">
+                    <label>Comentario: </label>
+                    <textarea placeholder="deje su comentario aca" name="contenido"></textarea><br>
+                    <input type="hidden" name="usuarioId" th:value="${session.usuarioSession.id}">
+                    <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                    <button type="submit">Enviar</button>
+                </form>
             </div>
 
         </div>

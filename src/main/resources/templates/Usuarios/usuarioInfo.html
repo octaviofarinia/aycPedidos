@@ -41,6 +41,19 @@
             <span class="returned-value" th:text="${usuario.fechaAlta}"></span>
         </div>
     </div>
+    <h3>Pedidos Realizados</h3>
+        <div th:each="pedido : ${pedidos}">
+            <hr>
+            <p><a th:href="@{/pedidoInfo/{pedidoId}(pedidoId=${pedido.id})}">Id: <span
+                        th:text="${pedido.id}"></span></a><br></p>
+            <p>Nombre Cliente: <span th:text="${pedido.nombreCliente}"></span><br></p>
+            <p>Fecha: <span th:text="${pedido.fechaAlta}"></span><br></p>
+            <form action="/hardDeletePedido" method="POST">
+                <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                <button type="submit">Eliminar</button>
+            </form>
+            <hr>
+        </div>
 
 </body>
 

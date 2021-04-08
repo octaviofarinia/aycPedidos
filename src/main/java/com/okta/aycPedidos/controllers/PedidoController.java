@@ -8,13 +8,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.okta.aycPedidos.entidades.Comentario;
 import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Pedido;
+import com.okta.aycPedidos.entidades.Usuario;
+import com.okta.aycPedidos.enums.TipoComentario;
 import com.okta.aycPedidos.services.ComentarioService;
 import com.okta.aycPedidos.services.PedidoService;
+import com.okta.aycPedidos.services.UsuarioService;
 
 @Controller
 @RequestMapping("/")
@@ -22,6 +27,9 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoService pedidoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -46,6 +54,22 @@ public class PedidoController {
 		modelo.put("comentarios", comentarios);
 		
 		return "/Pedidos/pedidoInfo.html";
+	}
+	
+	@PostMapping("/registrarComentario")
+	public String registrarComentario(ModelMap modelo,
+			@RequestParam(required = true) String contenido,
+			@RequestParam(required = true) String pedidoId,
+			@RequestParam(required = true) String usuarioId) {
+		
+		Long pedidoIdLong = Long.parseLong(pedidoId);
+		Pedido pedido = pedidoService.getOneById(pedidoIdLong);
+		
+		Usuario usuario = usuarioService.buscarPorId(usuarioId);
+		
+		comentarioService.registrarComentario(pedido, usuario, contenido, TipoComentario.COMENTARIO);
+		
+		return "redirect:/pedidoInfo/"+pedidoId+"";
 	}
 	
 	

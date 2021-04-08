@@ -8,7 +8,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -29,22 +28,24 @@ public class Comentario {
 
     private String contenido;
 	
+    //@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
     private Usuario autor;
 	
+	//@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
     private Pedido pedido;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoComentario tipo;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaBaja;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
     
 }
