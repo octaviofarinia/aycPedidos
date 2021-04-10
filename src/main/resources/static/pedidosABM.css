@@ -1,0 +1,405 @@
+/* ==========================================================================
+   #BOX-SIZING
+   ========================================================================== */
+
+
+/**
+ * More sensible default box-sizing:
+ * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
+ */
+
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+
+/* ==========================================================================
+   #RESET
+   ========================================================================== */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
+/**
+ * A very simple reset that sits on top of Normalize.css.
+ */
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+p,
+pre,
+dl,
+dd,
+ol,
+ul,
+figure,
+hr,
+fieldset,
+legend {
+    margin: 0;
+    padding: 0;
+}
+
+
+/**
+ * Remove trailing margins from nested lists.
+ */
+
+li>ol,
+li>ul {
+    margin-bottom: 0;
+}
+
+
+/**
+ * Remove default table spacing.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/**
+ * 1. Reset Chrome and Firefox behaviour which sets a `min-width: min-content;`
+ *    on fieldsets.
+ */
+
+fieldset {
+    min-width: 0;
+    /* [1] */
+    border: 0;
+}
+
+button {
+    outline: none;
+    background: none;
+    border: none;
+}
+
+
+/* ==========================================================================
+   #ROOT - COLORS, FONTS, FONTWEIGHT
+   ========================================================================== */
+
+:root {
+    --clr-red: #D9232F;
+    --clr-darkred: hsl(356, 72%, 20%);
+    --clr-yellow: hsl(56, 76%, 47%);
+    --clr-orange: #F08C1A;
+    --clr-violet: #7E1AF0;
+    --clr-blue: hsl(207, 80%, 50%);
+    --clr-lightblue: hsl(206, 80%, 95%);
+    --clr-form: hsl(206, 80%, 95%);
+    --clr-navtext: rgb(255, 255, 255);
+    --clr-nav: hsl(0, 0%, 0%);
+    --clr-formtext: black;
+    --clr-placeholder: grey;
+    --ff-main: 'Roboto', sans-serif;
+    --ff-title: 'Bebas Neue', cursive;
+    --fw-bold: 700;
+    --fw-normal: 400;
+    --fw-light: 100;
+}
+
+
+/* ==========================================================================
+   #HEADER STYLING
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 400;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+h5 {
+    font-size: 15px;
+}
+
+h6 {
+    font-size: 13px;
+}
+
+
+/* ==========================================================================
+   #GENERAL STYLING
+   ========================================================================== */
+
+body {
+    font-family: var(--ff-main);
+    font-weight: 400;
+    font-size: 14px;
+    background: linear-gradient(35deg, rgba(2, 0, 36, 1) 0%, rgba(217, 35, 47, 1) 100%, rgba(0, 212, 255, 1) 100%);
+    background-repeat: no-repeat;
+    /* background: rgb(0, 212, 255);
+  background: linear-gradient(51deg, rgba(0, 212, 255, 1) 0%, rgba(209, 232, 250, 1) 73%); */
+}
+
+
+/* ==========================================================================
+   #NAVBAR
+   ========================================================================== */
+
+.navbar__container {
+    background-color: var(--clr-nav);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    /* had to add this or the inputs would go over the navbar ???? */
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    padding: 1.3em 0;
+    margin: 0 auto;
+    max-width: 960px;
+}
+
+.navbar a {
+    color: var(--clr-navtext);
+    text-decoration: none;
+    font-size: 16px;
+    /* ADDED THIS BORDER SO THAT ON HOVER THE NAVBAR HEIGHT WOULDN'T GROW WITH BORDER-BOTTOM */
+    border-bottom: 1px solid black;
+    transition: all .5s ease-out;
+}
+
+.navbar a:hover {
+    border-bottom: 1px solid var(--clr-red);
+    /* tried this with font size put all links move. With transform:scale not the case */
+    transform: scale(1.3);
+    /* font-size: 18px; */
+}
+
+
+/* ==========================================================================
+   #CONTAINERS
+   ========================================================================== */
+
+.container {
+    min-height: 100vh;
+    /* added a top margin so that it would appear under the navbar which is fixed */
+    margin: 80px auto 0 auto;
+    max-width: 700px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.title-container {
+    background-color: var(--clr-orange);
+}
+
+.form-container {
+    background-color: var(--clr-form);
+    padding: 0 8em 4em 8em;
+    ;
+}
+
+
+/* ==========================================================================
+   #TITLES, FLEX, 
+   ========================================================================== */
+
+.title {
+    padding: 1em 0;
+    text-align: center;
+}
+
+.flex {
+    /* border: 1px solid yellow; */
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+
+
+/* Special label size for Name input */
+
+.client-name label {
+    font-family: var(--ff-main);
+    font-weight: var(--fw-bold);
+    font-size: 18px;
+}
+
+
+/* ==========================================================================
+   #LABEL, INPUTS, TEXTAREA
+   ========================================================================== */
+
+
+/* #BORDERS AND BACKGROUND */
+
+input,
+select,
+textarea {
+    background-color: var(--clr-lightblue);
+    border: none;
+    font-size: 16px;
+    font-family: var(--ff-main);
+    color: var(--clr-formtext);
+}
+
+input,
+select {
+    border-bottom: 1px solid white;
+    transition: all 0.5s ease-in-out;
+}
+
+textarea {
+    border: 1px solid white;
+}
+
+label {
+    display: none;
+}
+
+input {
+    outline: none;
+    padding-top: 1.6em;
+    margin: 0 auto;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width: 60%;
+    position: relative;
+    margin-bottom: 32px;
+    /* AFFECTS FILLED IN TEXT */
+}
+
+input[type='file'] {
+    color: var(--clr-placeholder);
+}
+
+
+/* this affects placeholder text (HOW TO ADD SELECT HERE?????)*/
+
+::-webkit-input-placeholder,
+ ::placeholder {
+    color: var(--clr-placeholder);
+}
+
+
+/* textarea */
+
+.descripcion {
+    width: 100%;
+    height: 100px;
+    padding: .5em;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 32px;
+    transition: all 0.5s ease-in-out;
+}
+
+
+/* ==========================================================================
+   #SELECT  - changes affect outer and mostly inner boxes 
+   ==========================================================================*/
+
+select {
+    /* display: none !important; */
+    width: 100% !important;
+    outline: none;
+    line-height: 34px;
+    padding-left: 0px;
+    color: var(--clr-placeholder);
+    font-weight: 400;
+    /* Another option with border shadows:
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0; */
+    /* Only affect outer box */
+    margin-top: 5px;
+    height: 34px;
+    margin-bottom: 32px;
+}
+
+
+/* ==========================================================================
+   #BUTTON 
+   ==========================================================================*/
+
+.btn-container {
+    display: flex;
+    margin: 0 auto;
+}
+
+.submit-btn {
+    margin: 3em auto;
+    background-color: var(--clr-red);
+    width: 150px;
+    text-align: center;
+    font-family: var(--ff-title);
+    color: black;
+    letter-spacing: 1px;
+    font-size: 18px;
+    font-weight: var(--fw-bold);
+    padding: .8em 1.2em;
+    border-radius: 10px;
+    cursor: pointer;
+    /* -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease; */
+    transition: all 0.5s ease;
+}
+
+
+/* ==========================================================================
+   #HOVER etc EFFECTS
+   ==========================================================================*/
+
+input:hover,
+select:hover {
+    border-bottom: 1px solid var(--clr-yellow);
+}
+
+.descripcion:hover {
+    border: 1px solid var(--clr-yellow);
+}
