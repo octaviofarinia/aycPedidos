@@ -24,7 +24,7 @@ public class TapaService {
 
 	// De momento solo registra una imagen en customFondos
 	@Transactional
-	public Tapa registrarTapa(String codigoFondo, String codigoFrase, MultipartFile imagenMultipartFile,
+	public Tapa registrarTapa(String codigoFondo, String codigoFrase, MultipartFile[] imagenesMultipartFile,
 			String customFrase) throws Exception {
 
 		Tapa tapa = new Tapa();
@@ -39,11 +39,14 @@ public class TapaService {
 				tapa.setCustomFrase(customFrase);
 			}
 
-			Imagen imagen = imagenService.guardar(imagenMultipartFile);
-
 			List<Imagen> imagenesCustom = new ArrayList<Imagen>();
 			tapa.setCustomImagenes(imagenesCustom);
-			imagenesCustom.add(imagen);
+
+			for(MultipartFile imagenMF : imagenesMultipartFile) {
+				Imagen imagen = imagenService.guardar(imagenMF);
+				imagenesCustom.add(imagen);
+			}
+			
 			tapa.setCustomImagenes(imagenesCustom);
 
 			tapaRepository.save(tapa);

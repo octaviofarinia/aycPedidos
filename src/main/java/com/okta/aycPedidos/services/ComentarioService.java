@@ -80,7 +80,7 @@ public class ComentarioService {
             comentarioRepository.save(comentario);
             
         } else {
-            throw new Exception("No se encontro el pedido");
+            throw new Exception("No se encontro el comentario");
         }
 	}
 
@@ -94,6 +94,7 @@ public class ComentarioService {
 		return comentarioRepository.listarComentariosPorPedido(pedido);
 	}
 	
+	//el nombre del metodo es horrible pero este devuelve todos los comentarios incluida la descripcion del pedido xd
 	@Transactional
 	public List<Comentario> listarTodosLosComentariosPorPedido(Pedido pedido) {
 		return comentarioRepository.listarTodosLosComentariosPorPedido(pedido);

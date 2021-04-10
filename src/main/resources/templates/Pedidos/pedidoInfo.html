@@ -10,7 +10,7 @@
 
 <body>
     <div class="main">
-        
+
         <a href="/inicio">INICIO</a> <br>
         <a href="/pedidosABM">PEDIDOS ABM</a> <br>
         <a href="/usuariosABM">USUARIOS ABM</a> <br>
@@ -52,18 +52,20 @@
             <div class="label">
                 Tapa:
                 <br>
-                <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
-                    th:src="@{'data:/'+${tapaImagen.mime}+';base64,'+${tapaImagen.getImgData()}}">
+                <div th:each="tapaImagen : ${tapaImagenes}">
+                    <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;" th:src="@{'data:/'+${tapaImagen.mime}+';base64,'+${tapaImagen.getImgData()}}">
+                    <a href="#">Descargar Imagen</a>
+                </div>
                 <br>
-                <a href="#">Descargar Imagen</a>
             </div>
             <div class="label">
                 Contratapa:
                 <br>
-                <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;"
-                    th:src="@{'data:/'+${contratapaImagen.mime}+';base64,'+${contratapaImagen.getImgData()}}">
+                <div th:each="contratapaImagen : ${contratapaImagenes}">
+                    <img class="returned-image" style="width: 250px; height: 250px; object-fit: scale-down;" th:src="@{'data:/'+${contratapaImagen.mime}+';base64,'+${contratapaImagen.getImgData()}}">
+                    <a href="#">Descargar Imagen</a>
+                </div>
                 <br>
-                <a href="#">Descargar Imagen</a>
             </div>
             <div class="label">
                 Descripcion:
@@ -72,16 +74,20 @@
             <hr>
             <p class="label">Comunicaciones:</p>
             <div th:each="comentario : ${comentarios}" class="dialog">
-                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"></span> - <span
-                        th:text="${comentario.fechaAlta}"></span></p>
+                <p><span style="font-weight: bold;" th:text="${comentario.autor.username}"></span> - <span th:text="${comentario.fechaAlta}"></span></p>
                 <p><span th:text="${comentario.contenido}"></span></p>
+                <form th:if="${usuario.id} == ${comentario.autor.id} OR ${usuario.rol == T(com.okta.aycPedidos.enums.Rol).ADMIN}" action="/hardDeleteComentario" method="POST">
+                    <input type="hidden" name="comentarioId" th:value="${comentario.id}">
+                    <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                    <button type="submit">Eliminar</button>
+                </form>
                 <hr>
             </div>
             <div>
                 <form action="/registrarComentario" method="POST">
                     <label>Comentario: </label>
                     <textarea placeholder="deje su comentario aca" name="contenido"></textarea><br>
-                    <input type="hidden" name="usuarioId" th:value="${session.usuarioSession.id}">
+                    <input type="hidden" name="usuarioId" th:value="${usuario.id}">
                     <input type="hidden" name="pedidoId" th:value="${pedido.id}">
                     <button type="submit">Enviar</button>
                 </form>

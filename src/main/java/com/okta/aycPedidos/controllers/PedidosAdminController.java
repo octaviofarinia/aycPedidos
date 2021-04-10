@@ -63,12 +63,12 @@ public class PedidosAdminController {
 			@RequestParam(required = true) String disenadorId,
 			//TAPA
 			@RequestParam(required = true) String codigoFondoTapa,
-			@RequestParam() MultipartFile customFondoTapa,
+			@RequestParam() MultipartFile[] customFondosTapa,
 			@RequestParam(required = true) String codigoFraseTapa,
 			@RequestParam() String customFraseTapa,
 			//CONTRATAPA
 			@RequestParam(required = true) String codigoFondoContratapa,
-			@RequestParam() MultipartFile customFondoContratapa,
+			@RequestParam() MultipartFile[] customFondosContratapa,
 			@RequestParam(required = true) String codigoFraseContratapa,
 			@RequestParam() String customFraseContratapa) {
 		
@@ -85,9 +85,9 @@ public class PedidosAdminController {
 					//Agenda
 					agendaService.registrarAgenda(codigoInterior, 
 							//Tapa
-							tapaService.registrarTapa(codigoFondoTapa, codigoFraseTapa, customFondoTapa, customFraseTapa), 
+							tapaService.registrarTapa(codigoFondoTapa, codigoFraseTapa, customFondosTapa, customFraseTapa), 
 							//Contratapa
-							tapaService.registrarTapa(codigoFondoContratapa, codigoFraseContratapa, customFondoContratapa, customFraseContratapa)));	
+							tapaService.registrarTapa(codigoFondoContratapa, codigoFraseContratapa, customFondosContratapa, customFraseContratapa)));	
 			
 		}catch(Exception ex) {
 			System.err.println(ex.getMessage());
