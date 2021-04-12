@@ -2,17 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyC Pedidos</title>
+    <div th:replace="fragments :: head_principal"></div>
 </head>
 
 <body>
-    <h1>INDEX</h1>
-    <hr>
-    <a href="/login">LOGIN</a>
-    <a href="/registro">REGISTRO</a>
+    <div th:replace="fragments :: navbar_index"></div>
+
+    <!-- Main index section -->
+    <section id="main-index">
+        <div class="container">
+            <h1>INDEX</h1>
+        </div>
+    </section>
+    
+    <div th:replace="fragments :: js_bundle_bootstrap"></div>
 </body>
 
 </html>

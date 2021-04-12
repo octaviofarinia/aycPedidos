@@ -2,22 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyC Pedidos</title>
+    <div th:replace="fragments :: head_principal"></div>
 </head>
 
 <body>
-    <h1>LOGIN</h1>
-    <hr>
-    <form action="/logincheck" method="post">
-        <label for="mail">Mail</label>
-        <input type="mail" placeholder="ingrese el mail" class="form-control" name="mail">
-        <label for="password">Contraseña</label>
-        <input type="password" placeholder="ingrese su contraseña" class="form-control" name="password">
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+
+    <div th:replace="fragments :: navbar_index"></div>
+
+    <!-- Login form section -->
+    <section id="login-form">
+        <div class="container">
+            <h1>LOGIN</h1>
+            <hr>
+            <form action="/logincheck" method="post">
+                <label for="mail">Mail</label>
+                <input type="mail" placeholder="ingrese el mail" class="form-control" name="mail">
+                <label for="password">Contraseña</label>
+                <input type="password" placeholder="ingrese su contraseña" class="form-control" name="password">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </section>
+    
+    <div th:replace="fragments :: js_bundle_bootstrap"></div>
+
 </body>
 
 </html>
