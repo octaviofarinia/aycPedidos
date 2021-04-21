@@ -20,9 +20,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.okta.aycPedidos.converters.UsuarioConverter;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Rol;
+import com.okta.aycPedidos.excepciones.WebException;
+import com.okta.aycPedidos.modelos.UsuarioModel;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
 
 @Service
@@ -30,119 +33,163 @@ public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
 	@Autowired
 	private PedidoService pedidoService;
-	
+	@Autowired
+	private UsuarioConverter usuarioConverter;
+
 	@Transactional
-    public void registrarUsuario(String username, String mail, String password, String repeatedPass, Rol rol) throws Exception {
+	public void registrarUsuario(String username, String mail, String password, String repeatedPass, Rol rol)
+			throws Exception {
 
-        validarDatosUsuario(username, mail, password, repeatedPass, rol);
+		validarDatosUsuario(username, mail, password, repeatedPass, rol);
 
-        Usuario usuario = new Usuario();
+		Usuario usuario = new Usuario();
 
-        usuario.setUsername(username);
-        
-        String encriptada = new BCryptPasswordEncoder().encode(password);
-        usuario.setPassword(encriptada);
-        
-        usuario.setMail(mail);
-        
-        usuario.setRol(rol);
-        
-        usuario.setFechaAlta(new Date());
-        usuario.setFechaBaja(null);
-        usuario.setFechaModificacion(null);
+		usuario.setUsername(username);
 
-        usuarioRepository.save(usuario);
-    }
-	
+		String encriptada = new BCryptPasswordEncoder().encode(password);
+		usuario.setPassword(encriptada);
+
+		usuario.setMail(mail);
+
+		usuario.setRol(rol);
+
+		usuario.setFechaAlta(new Date());
+		usuario.setFechaBaja(null);
+		usuario.setFechaModificacion(null);
+
+		usuarioRepository.save(usuario);
+	}
+
 	@Transactional
-    public void modificarUsuario(String id, String username, String mail, String password, String repeatedPassword, Rol rol) throws Exception {
+	public void modificarUsuario(String id, String username, String mail, String password, String repeatedPassword,
+			Rol rol) throws Exception {
 
-        validarDatosUsuario(username, mail, password, repeatedPassword, rol);
+		validarDatosUsuario(username, mail, password, repeatedPassword, rol);
 
-        Optional<Usuario> respuesta = usuarioRepository.findById(id);
+		Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
-        if (respuesta.isPresent()) {
-        	Usuario usuario = respuesta.get();
+		if (respuesta.isPresent()) {
+			Usuario usuario = respuesta.get();
 
-            usuario.setUsername(username);
-            
-            String encriptada = new BCryptPasswordEncoder().encode(password);
-            usuario.setPassword(encriptada);
-            
-            usuario.setMail(mail);
-            
-            usuario.setRol(rol);
-            
-            usuario.setFechaModificacion(new Date());
+			usuario.setUsername(username);
 
-            usuarioRepository.save(usuario);
-        } else {
-            throw new Exception("No se encontro el usuario");
-        }
+			String encriptada = new BCryptPasswordEncoder().encode(password);
+			usuario.setPassword(encriptada);
 
-    }
-	
+			usuario.setMail(mail);
+
+			usuario.setRol(rol);
+
+			usuario.setFechaModificacion(new Date());
+
+			usuarioRepository.save(usuario);
+		} else {
+			throw new Exception("No se encontro el usuario");
+		}
+
+	}
+
 	@Transactional
-    public void hardDeleteUsuario(String id) throws Exception {
+	public void hardDeleteUsuario(String id) throws Exception {
 
-        Optional<Usuario> respuesta = usuarioRepository.findById(id);
+		Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
-        if (respuesta.isPresent()) {
+		if (respuesta.isPresent()) {
 
-            Usuario usuario = respuesta.get();
+			Usuario usuario = respuesta.get();
 
-            List<Pedido> pedidos = pedidoService.listarPedidosPorUsuario(usuario);
-            
-            for (Pedido pedido : pedidos) {
-				
-            	pedidoService.hardDeletePedido(pedido.getId());
+			List<Pedido> pedidos = pedidoService.listarPedidosPorUsuario(usuario);
+
+			for (Pedido pedido : pedidos) {
+				pedidoService.hardDeletePedido(pedido.getId());
 			}
-            
-            usuarioRepository.delete(usuario);
 
-        } else {
-            throw new Exception("No se encontro el usuario solicitado");
-        }
-    }
-	
+			usuarioRepository.delete(usuario);
+
+		} else {
+			throw new Exception("No se encontro el usuario solicitado");
+		}
+	}
+
 	@Transactional
-    public void softDeleteUsuario(String id) throws Exception {
+	public void softDeleteUsuario(String id) throws Exception {
 
-        Optional<Usuario> respuesta = usuarioRepository.findById(id);
+		Optional<Usuario> respuesta = usuarioRepository.findById(id);
 
-        if (respuesta.isPresent()) {
+		if (respuesta.isPresent()) {
 
-            Usuario usuario = respuesta.get();
+			Usuario usuario = respuesta.get();
 
-            usuario.setFechaBaja(new Date());
-            
-            usuarioRepository.save(usuario);
-            
-        } else {
-            throw new Exception("No se encontro el usuario solicitado");
-        }
-    }
-	
-	public void validarDatosUsuario(String username, String mail, String password, String repeatedPass, Rol rol) throws Exception {
-        if (username == null || username.isEmpty()) {
-            throw new Exception("Nombre de usuario invalido");
-        }
-        if (mail == null || mail.isEmpty()) {
-            throw new Exception("Mail invalido");
-        }
-        if (password == null || password.isEmpty() || password.length() <= 8) {
-            throw new Exception("Contraseña invalida, debe tener como minimo 8 caracteres");
-        }
-        if (!password.equals(repeatedPass)) {
-            throw new Exception("Las contraseñas deben ser iguales");
-        }
-        if (rol == null) {
-            throw new Exception("Debe elegir un rol");
-        }
-    }
+			usuario.setFechaBaja(new Date());
+
+			usuarioRepository.save(usuario);
+
+		} else {
+			throw new Exception("No se encontro el usuario solicitado");
+		}
+	}
+
+	public void validarDatosUsuario(String username, String mail, String password, String repeatedPass, Rol rol)
+			throws Exception {
+		if (username == null || username.isEmpty()) {
+			throw new Exception("Nombre de usuario invalido");
+		}
+		if (mail == null || mail.isEmpty()) {
+			throw new Exception("Mail invalido");
+		}
+		if (password == null || password.isEmpty() || password.length() <= 8) {
+			throw new Exception("Contraseña invalida, debe tener como minimo 8 caracteres");
+		}
+		if (!password.equals(repeatedPass)) {
+			throw new Exception("Las contraseñas deben ser iguales");
+		}
+		if (rol == null) {
+			throw new Exception("Debe elegir un rol");
+		}
+	}
+
+	// METODOS CON MODELOS
+
+	// Registra nuevos usuarios o modifica uno ya creado
+	@Transactional
+	public Usuario persistir(UsuarioModel usuarioModel, String password, String repeatedPass) throws WebException {
+		
+		validarDatosUsuario(usuarioModel, password, repeatedPass);
+		
+		Usuario usuarioEntity = usuarioConverter.modelToEntity(usuarioModel);
+
+		if (usuarioEntity.getFechaAlta() != null) {
+			usuarioEntity.setFechaModificacion(new Date());
+		} else {
+			usuarioEntity.setFechaAlta(new Date());
+		}
+		
+		String encriptada = new BCryptPasswordEncoder().encode(password);
+		usuarioEntity.setPassword(encriptada);
+
+		return usuarioRepository.save(usuarioEntity);
+	}
+
+	public void validarDatosUsuario(UsuarioModel usuarioModel, String password, String repeatedPass) throws WebException {
+		
+		if (usuarioModel.getUsername() == null || usuarioModel.getUsername().isEmpty()) {
+			throw new WebException("Nombre de usuario invalido");
+		}
+		if (usuarioModel.getMail() == null || usuarioModel.getMail().isEmpty()) {
+			throw new WebException("Mail invalido");
+		}
+		if (password == null || password.isEmpty() || password.length() <= 8) {
+			throw new WebException("Contraseña invalida, debe tener como minimo 8 caracteres");
+		}
+		if (!password.equals(repeatedPass)) {
+			throw new WebException("Las contraseñas deben ser iguales");
+		}
+		if (usuarioModel.getRol() == null) {
+			throw new WebException("Debe elegir un rol");
+		}
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
@@ -168,12 +215,12 @@ public class UsuarioService implements UserDetailsService {
 			return null;
 		}
 	}
-	
+
 	@Transactional
 	public Usuario buscarPorUsername(String username) {
 		return usuarioRepository.buscarPorUsername(username);
 	}
-	
+
 	@Transactional
 	public Usuario buscarPorId(String usuarioId) {
 		return usuarioRepository.getOne(usuarioId);
@@ -183,5 +230,5 @@ public class UsuarioService implements UserDetailsService {
 	public List<Usuario> listarUsuariosActivos() {
 		return usuarioRepository.listarUsuariosActivos();
 	}
-	
+
 }

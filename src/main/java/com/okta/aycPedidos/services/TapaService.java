@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.okta.aycPedidos.converters.TapaConverter;
 import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Tapa;
+import com.okta.aycPedidos.excepciones.WebException;
+import com.okta.aycPedidos.modelos.TapaModel;
 import com.okta.aycPedidos.repositories.TapaRepository;
 
 @Service
@@ -21,8 +24,9 @@ public class TapaService {
 	private TapaRepository tapaRepository;
 	@Autowired
 	private ImagenService imagenService;
+	@Autowired
+	private TapaConverter tapaConverter;
 
-	// De momento solo registra una imagen en customFondos
 	@Transactional
 	public Tapa registrarTapa(String codigoFondo, String codigoFrase, MultipartFile[] imagenesMultipartFile,
 			String customFrase) throws Exception {
@@ -42,11 +46,11 @@ public class TapaService {
 			List<Imagen> imagenesCustom = new ArrayList<Imagen>();
 			tapa.setCustomImagenes(imagenesCustom);
 
-			for(MultipartFile imagenMF : imagenesMultipartFile) {
+			for (MultipartFile imagenMF : imagenesMultipartFile) {
 				Imagen imagen = imagenService.guardar(imagenMF);
 				imagenesCustom.add(imagen);
 			}
-			
+
 			tapa.setCustomImagenes(imagenesCustom);
 
 			tapaRepository.save(tapa);
@@ -79,6 +83,13 @@ public class TapaService {
 
 			tapaRepository.save(modificada);
 		}
+	}
+
+	//Registra nuevas tapas o modifica una ya creada
+	@Transactional
+	public Tapa persistir(TapaModel tapaModel) throws WebException {
+		Tapa tapaEntity = tapaConverter.modelToEntity(tapaModel);
+		return tapaRepository.save(tapaEntity);
 	}
 
 	@Transactional

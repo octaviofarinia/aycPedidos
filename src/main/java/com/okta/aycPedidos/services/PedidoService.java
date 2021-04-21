@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.okta.aycPedidos.converters.PedidoConverter;
 import com.okta.aycPedidos.entidades.Agenda;
 import com.okta.aycPedidos.entidades.Comentario;
 import com.okta.aycPedidos.entidades.Imagen;
@@ -18,6 +19,8 @@ import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.Estado;
 import com.okta.aycPedidos.enums.TipoComentario;
+import com.okta.aycPedidos.excepciones.WebException;
+import com.okta.aycPedidos.modelos.PedidoModel;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
 
@@ -26,15 +29,14 @@ public class PedidoService {
 
 	@Autowired
 	private PedidoRepository pedidoRepository;
-
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-
 	@Autowired
 	private ImagenService imagenService;
-
 	@Autowired
 	private ComentarioService comentarioService;
+	@Autowired
+	private PedidoConverter pedidoConverter;
 
 	@Transactional
 	public void registrarPedido(String descripcion, Integer cantidad, String nombreCliente, String estado,
@@ -113,7 +115,8 @@ public class PedidoService {
 
 	@Transactional
 	public void hardDeletePedido(Long pedidoId) throws Exception {
-		List<Comentario> comentarios = comentarioService.listarTodosLosComentariosPorPedido(pedidoRepository.getOne(pedidoId));
+		List<Comentario> comentarios = comentarioService
+				.listarTodosLosComentariosPorPedido(pedidoRepository.getOne(pedidoId));
 		for (Comentario comentario : comentarios) {
 			comentarioService.hardDeleteComentario(comentario.getId());
 		}
@@ -148,6 +151,23 @@ public class PedidoService {
 		pedidoRepository.save(pedido);
 	}
 
+	// METODOS CON MODELOS
+
+	// Registra nuevos pedidos o modifica uno ya creado
+	@Transactional
+	public Pedido persistir(PedidoModel pedidoModel) throws WebException {
+
+		Pedido pedidoEntity = pedidoConverter.modelToEntity(pedidoModel);
+
+		if (pedidoEntity.getFechaAlta() != null) {
+			pedidoEntity.setFechaModificacion(new Date());
+		} else {
+			pedidoEntity.setFechaAlta(new Date());
+		}
+
+		return pedidoRepository.save(pedidoEntity);
+	}
+
 	@Transactional
 	public Pedido getOneById(Long pedidoId) {
 		return pedidoRepository.getOne(pedidoId);
@@ -157,7 +177,7 @@ public class PedidoService {
 	public List<Pedido> listarPedidosActivos() {
 		return pedidoRepository.listarPedidosActivos();
 	}
-	
+
 	@Transactional
 	public List<Pedido> listarPedidosPorUsuario(Usuario usuario) {
 		return pedidoRepository.listarPedidosPorUsuario(usuario);
