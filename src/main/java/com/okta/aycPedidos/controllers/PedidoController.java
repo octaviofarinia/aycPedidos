@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.okta.aycPedidos.converters.UsuarioConverter;
 import com.okta.aycPedidos.entidades.Comentario;
 import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.TipoComentario;
+import com.okta.aycPedidos.excepciones.WebException;
 import com.okta.aycPedidos.services.ComentarioService;
 import com.okta.aycPedidos.services.PedidoService;
 import com.okta.aycPedidos.services.UsuarioService;
@@ -31,13 +33,12 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoService pedidoService;
-	
 	@Autowired
 	private UsuarioService usuarioService;
-
+	@Autowired
+	private UsuarioConverter usuarioConverter;
 	@Autowired
 	private ComentarioService comentarioService;
-	
 	@Autowired
     private HttpSession session;
 	
@@ -77,12 +78,13 @@ public class PedidoController {
 	public String registrarComentario(ModelMap modelo,
 			@RequestParam(required = true) String contenido,
 			@RequestParam(required = true) String pedidoId,
-			@RequestParam(required = true) String usuarioId) {
+			@RequestParam(required = true) String usuarioId) throws WebException {
 		
 		Long pedidoIdLong = Long.parseLong(pedidoId);
 		Pedido pedido = pedidoService.getOneById(pedidoIdLong);
 		
-		Usuario usuario = usuarioService.buscarPorId(usuarioId);
+		//ARREGLAR DESPUES -- CAMBIAR FORMA DE REGISTRAR COMENTARIOS
+		Usuario usuario = usuarioConverter.modelToEntity(usuarioService.buscarPorId(usuarioId));
 		
 		comentarioService.registrarComentario(pedido, usuario, contenido, TipoComentario.COMENTARIO);
 		

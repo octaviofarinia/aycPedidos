@@ -154,26 +154,36 @@ public class UsuarioService implements UserDetailsService {
 
 	// Registra nuevos usuarios o modifica uno ya creado
 	@Transactional
-	public Usuario persistir(UsuarioModel usuarioModel, String password, String repeatedPass) throws WebException {
+	public Usuario persistir(UsuarioModel usuarioModel, String password, String repeatedPass) {
 		
-		validarDatosUsuario(usuarioModel, password, repeatedPass);
-		
-		Usuario usuarioEntity = usuarioConverter.modelToEntity(usuarioModel);
+		try {
+			
+			validarDatosUsuario(usuarioModel, password, repeatedPass);
 
-		if (usuarioEntity.getFechaAlta() != null) {
-			usuarioEntity.setFechaModificacion(new Date());
-		} else {
-			usuarioEntity.setFechaAlta(new Date());
+			Usuario usuarioEntity = usuarioConverter.modelToEntity(usuarioModel);
+			
+			if (usuarioEntity.getFechaAlta() != null) {
+				usuarioEntity.setFechaModificacion(new Date());
+			} else {
+				usuarioEntity.setFechaAlta(new Date());
+			}
+
+			String encriptada = new BCryptPasswordEncoder().encode(password);
+			usuarioEntity.setPassword(encriptada);
+			
+			return usuarioRepository.save(usuarioEntity);
+			
+		} catch (WebException e) {
+			System.out.println(e.getMessage());
 		}
 		
-		String encriptada = new BCryptPasswordEncoder().encode(password);
-		usuarioEntity.setPassword(encriptada);
 
-		return usuarioRepository.save(usuarioEntity);
+		return null;
 	}
 
-	public void validarDatosUsuario(UsuarioModel usuarioModel, String password, String repeatedPass) throws WebException {
-		
+	public void validarDatosUsuario(UsuarioModel usuarioModel, String password, String repeatedPass)
+			throws WebException {
+
 		if (usuarioModel.getUsername() == null || usuarioModel.getUsername().isEmpty()) {
 			throw new WebException("Nombre de usuario invalido");
 		}
@@ -217,18 +227,18 @@ public class UsuarioService implements UserDetailsService {
 	}
 
 	@Transactional
-	public Usuario buscarPorUsername(String username) {
-		return usuarioRepository.buscarPorUsername(username);
+	public UsuarioModel buscarPorUsername(String username) throws WebException {
+		return usuarioConverter.entityToModel(usuarioRepository.buscarPorUsername(username));
 	}
 
 	@Transactional
-	public Usuario buscarPorId(String usuarioId) {
-		return usuarioRepository.getOne(usuarioId);
+	public UsuarioModel buscarPorId(String usuarioId) throws WebException {
+		return usuarioConverter.entityToModel(usuarioRepository.getOne(usuarioId));
 	}
 
 	@Transactional
-	public List<Usuario> listarUsuariosActivos() {
-		return usuarioRepository.listarUsuariosActivos();
+	public List<UsuarioModel> listarUsuariosActivos() throws WebException {
+		return usuarioConverter.entitiesToModels(usuarioRepository.listarUsuariosActivos());
 	}
 
 }

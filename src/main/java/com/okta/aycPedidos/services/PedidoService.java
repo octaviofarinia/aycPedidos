@@ -21,6 +21,7 @@ import com.okta.aycPedidos.enums.Estado;
 import com.okta.aycPedidos.enums.TipoComentario;
 import com.okta.aycPedidos.excepciones.WebException;
 import com.okta.aycPedidos.modelos.PedidoModel;
+import com.okta.aycPedidos.modelos.UsuarioModel;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
 
@@ -181,5 +182,9 @@ public class PedidoService {
 	@Transactional
 	public List<Pedido> listarPedidosPorUsuario(Usuario usuario) {
 		return pedidoRepository.listarPedidosPorUsuario(usuario);
+	}
+	@Transactional
+	public List<PedidoModel> listarPedidosPorUsuario(UsuarioModel usuario) throws WebException {
+		return pedidoConverter.entitiesToModels(pedidoRepository.listarPedidosPorUsuario(usuarioRepository.getOne(usuario.getId())));
 	}
 }

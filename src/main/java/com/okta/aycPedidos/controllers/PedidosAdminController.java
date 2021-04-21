@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.okta.aycPedidos.entidades.Pedido;
-import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.CodigoInterior;
+import com.okta.aycPedidos.excepciones.WebException;
+import com.okta.aycPedidos.modelos.UsuarioModel;
 import com.okta.aycPedidos.services.AgendaService;
 import com.okta.aycPedidos.services.PedidoService;
 import com.okta.aycPedidos.services.TapaService;
@@ -40,14 +41,14 @@ public class PedidosAdminController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/pedidosABM")
-    public String pedidosABM(ModelMap modelo) {
+    public String pedidosABM(ModelMap modelo) throws WebException {
 		Set<CodigoInterior> codigosInterior = EnumSet.allOf(CodigoInterior.class);
         modelo.put("codigosInterior", codigosInterior);
         
         List<Pedido> pedidos = pedidoService.listarPedidosActivos();
         modelo.put("pedidos", pedidos);
         
-        List<Usuario> usuarios = usuarioService.listarUsuariosActivos();
+        List<UsuarioModel> usuarios = usuarioService.listarUsuariosActivos();
         modelo.put("usuarios", usuarios);
         
         return "/Pedidos/pedidosABM.html";
@@ -70,7 +71,7 @@ public class PedidosAdminController {
 			@RequestParam(required = true) String codigoFondoContratapa,
 			@RequestParam() MultipartFile[] customFondosContratapa,
 			@RequestParam(required = true) String codigoFraseContratapa,
-			@RequestParam() String customFraseContratapa) {
+			@RequestParam() String customFraseContratapa) throws WebException {
 		
 		try {
 			pedidoService.registrarPedido(descripcion, Integer.parseInt(cantidad), nombreCliente, 
@@ -98,7 +99,7 @@ public class PedidosAdminController {
 	}
 	
 	@PostMapping("/hardDeletePedido")
-	public String hardDeletePedido(ModelMap modelo, String pedidoId) {
+	public String hardDeletePedido(ModelMap modelo, String pedidoId) throws WebException {
 		try {
 			pedidoService.hardDeletePedido(Long.parseLong(pedidoId));
 		}catch(Exception ex) {
@@ -110,7 +111,7 @@ public class PedidosAdminController {
 	}
 	
 	@PostMapping("/softDeletePedido")
-	public String softDeletePedido(ModelMap modelo, String pedidoId) {
+	public String softDeletePedido(ModelMap modelo, String pedidoId) throws WebException {
 		try {
 			pedidoService.softDeletePedido(Long.parseLong(pedidoId));
 		}catch(Exception ex) {
