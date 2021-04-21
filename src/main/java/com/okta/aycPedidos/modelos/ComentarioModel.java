@@ -17,8 +17,10 @@ public class ComentarioModel implements Serializable {
 	private String contenido;
 	
 	private UsuarioModel autor;
+	private String idAutor;
 	
 	private PedidoModel pedido;
+	private Long idPedido;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date fechaAlta;

@@ -14,7 +14,7 @@ public class PedidoModel implements Serializable {
 
 	private static final long serialVersionUID = 5556277326812187660L;
 
-	private String id;
+	private Long id;
 	
 	private Integer cantidad;
 	
@@ -23,12 +23,16 @@ public class PedidoModel implements Serializable {
 	private Estado estado;
 	
 	private AgendaModel agenda;
+	private String idAgenda;
 	
 	private UsuarioModel vendedor;
+	private String idVendedor;
 	
 	private UsuarioModel disenador;
+	private String idDisenador;
 	
 	private ImagenModel preview;
+	private String idPreview;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date fechaAlta;

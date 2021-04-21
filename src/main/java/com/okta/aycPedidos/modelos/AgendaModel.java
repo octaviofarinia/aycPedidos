@@ -16,7 +16,11 @@ public class AgendaModel implements Serializable {
 	private CodigoInterior codigoInterior;
 	
 	private TapaModel tapa;
+	private String idTapa;
 	
 	private TapaModel contratapa;
+	private String idContratapa;
 	
 }
+
+

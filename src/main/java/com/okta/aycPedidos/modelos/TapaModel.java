@@ -19,5 +19,6 @@ public class TapaModel implements Serializable {
 	private String customFrase;
 	
 	private List<ImagenModel> customImagenes;
+	private List<String> idsCustomImagenes;
 	
 }
