@@ -13,6 +13,7 @@ import com.okta.aycPedidos.excepciones.WebException;
 import com.okta.aycPedidos.modelos.AgendaModel;
 import com.okta.aycPedidos.repositories.AgendaRepository;
 import com.okta.aycPedidos.repositories.TapaRepository;
+import com.okta.aycPedidos.services.TapaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +23,12 @@ public class AgendaConverter extends Converter<AgendaModel, Agenda>{
 	
 	@Autowired
 	private AgendaRepository agendaRepository;
-	
 	@Autowired
 	private TapaRepository tapaRepository;
-	
 	@Autowired
 	private TapaConverter tapaConverter;
+	@Autowired
+	private TapaService tapaService;
 	
 	public Agenda modelToEntity(AgendaModel model) throws WebException {
 		
@@ -44,17 +45,20 @@ public class AgendaConverter extends Converter<AgendaModel, Agenda>{
 			Tapa entityTapa = null;
 			if(model.getIdTapa() != null && !model.getIdTapa().isEmpty()) {
 				entityTapa = tapaRepository.getOne(model.getIdTapa());
+			} else {
+				entityTapa = tapaService.persistir(model.getTapa());
 			}
 			entity.setTapa(entityTapa);
 			
 			Tapa entityContratapa = null;
 			if(model.getIdContratapa() != null && !model.getIdContratapa().isEmpty()) {
 				entityContratapa = tapaRepository.getOne(model.getIdContratapa());
+			} else {
+				entityContratapa = tapaService.persistir(model.getContratapa());
 			}
 			entity.setContratapa(entityContratapa);
 			
 			BeanUtils.copyProperties(model, entity);
-			
 		} catch (Exception e) {
 			throw new WebException("error al convertir el modelo " + model.toString() + " a entidad");
 		}

@@ -152,11 +152,8 @@ public class PedidoService {
 		pedidoRepository.save(pedido);
 	}
 
-	// METODOS CON MODELOS
-
-	// Registra nuevos pedidos o modifica uno ya creado
 	@Transactional
-	public Pedido persistir(PedidoModel pedidoModel) throws WebException {
+	public Pedido persistir(PedidoModel pedidoModel, String descripcion) throws WebException {
 
 		Pedido pedidoEntity = pedidoConverter.modelToEntity(pedidoModel);
 
@@ -165,8 +162,12 @@ public class PedidoService {
 		} else {
 			pedidoEntity.setFechaAlta(new Date());
 		}
-
-		return pedidoRepository.save(pedidoEntity);
+		
+		pedidoEntity = pedidoRepository.save(pedidoEntity);
+		
+		comentarioService.registrarComentario(pedidoEntity, pedidoEntity.getVendedor(), descripcion, TipoComentario.DESCRIPCION);
+		
+		return pedidoEntity;
 	}
 
 	@Transactional
@@ -177,6 +178,11 @@ public class PedidoService {
 	@Transactional
 	public List<Pedido> listarPedidosActivos() {
 		return pedidoRepository.listarPedidosActivos();
+	}
+	
+	@Transactional
+	public List<PedidoModel> listarPedidosModelActivos() throws WebException {
+		return pedidoConverter.entitiesToModels(pedidoRepository.listarPedidosActivos());
 	}
 
 	@Transactional

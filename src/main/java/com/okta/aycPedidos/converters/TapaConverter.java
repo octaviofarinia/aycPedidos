@@ -42,7 +42,6 @@ public class TapaConverter extends Converter<TapaModel, Tapa> {
 			entity.setCustomImagenes(imagenesE);
 
 			BeanUtils.copyProperties(model, entity);
-
 		} catch (Exception e) {
 			throw new WebException("error al convertir el modelo " + model.toString() + " a entidad");
 		}

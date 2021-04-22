@@ -28,16 +28,16 @@
             <!-- FORMULARIO -->
             <div class="form-container">
                 <h3 class="title">CARGAR NUEVO PEDIDO</h3>
-                <form id="nuevo-pedido" action="/registrarPedido" method="POST" enctype="multipart/form-data">
+                <form id="nuevo-pedido" action="/registrarPedido" method="POST" enctype="multipart/form-data" th:object="${pedido}">
                     <div class="client-name flex">
                         <label for="client-name">Nombre del Cliente</label>
-                        <input type="text" id="client-name" name="nombreCliente"
+                        <input type="text" id="client-name" th:field="*{nombreCliente}"
                             placeholder="Ingrese el nombre del cliente" required>
                     </div>
                     <h3 class="agenda-section title">Interior</h3>
                     <div class="select flex">
                         <label for="codigoInterior">Codigo Interior</label>
-                        <input list="lista" name="codigoInterior" id="codigoInterior"
+                        <input list="lista" th:field="*{agenda.codigoInterior}" id="codigoInterior"
                             placeholder="Ingresar codigo de interior" required>
                         <datalist id="lista" style="display: none;">
                             <div th:each="codigo : ${codigosInterior}">
@@ -52,7 +52,7 @@
                     <h3 class="agenda-seccion title">Tapa</h3>
                     <div class="select flex">
                         <label for="tapa-fondo">Codigo de Fondo</label>
-                        <input type="text" id="tapa-fondo" name="codigoFondoTapa" placeholder="Ingresar codigo de fondo"
+                        <input type="text" id="tapa-fondo" th:field="*{agenda.tapa.codigoFondo}" placeholder="Ingresar codigo de fondo"
                             required>
                     </div>
                     <div class="tapa-personal flex">
@@ -62,19 +62,19 @@
                     </div>
                     <div class="select flex">
                         <label for="tapa-frase">Codigo de Frase</label>
-                        <input type="text" id="tapa-frase" name="codigoFraseTapa" placeholder="Ingresar codigo de frase"
+                        <input type="text" id="tapa-frase" th:field="*{agenda.tapa.codigoFrase}" placeholder="Ingresar codigo de frase"
                             required>
                     </div>
                     <div class="tapa-frase__personal flex">
                         <label for="tapa-frase__personal">Frase Personalizada</label>
-                        <input type="text" id="tapa-frase__personal" name="customFraseTapa"
+                        <input type="text" id="tapa-frase__personal" th:field="*{agenda.tapa.customFrase}"
                             placeholder="Agregar frase personalizada">
                     </div>
-                    <!-- CONTRATAPA  -->
+                    <!-- CONTRATAPA -->
                     <h3 class="agenda-seccion title">Contratapa</h3>
                     <div class="select flex">
                         <label for="contratapa-fondo">Codigo de Fondo</label>
-                        <input type="text" id="contratapa-fondo" name="codigoFondoContratapa"
+                        <input type="text" id="contratapa-fondo" th:field="*{agenda.contratapa.codigoFondo}"
                             placeholder="Ingresar codigo de fondo" required>
                     </div>
                     <div class="contratapa__personal flex">
@@ -84,28 +84,28 @@
                     </div>
                     <div class="select flex">
                         <label for="contratapa-frase">Codigo de Frase</label>
-                        <input type="text" id="contratapa-frase" name="codigoFraseContratapa"
+                        <input type="text" id="contratapa-frase" th:field="*{agenda.contratapa.codigoFrase}"
                             placeholder="Ingresar codigo de frase" required>
                     </div>
                     <div class="contratapa-frase__personal flex">
                         <label for="contratapa-frase__personal">Frase Personalizada</label>
-                        <input type="text" id="contratapa-frase__personal" name="customFraseContratapa"
+                        <input type="text" id="contratapa-frase__personal" th:field="*{agenda.contratapa.customFrase}"
                             placeholder="Agregar frase">
                     </div>
                     <div class="quatity flex">
                         <h3 class="agenda-seccion title">Cantidad</h3>
                         <label for="cantidad">Cantidad de Agendas</label>
-                        <input type="number" id="cantidad" name="cantidad" placeholder="Elegir cantidad de agendas"
+                        <input type="number" id="cantidad" th:field="*{cantidad}" placeholder="Elegir cantidad de agendas"
                             required>
                     </div>
                     <div class="textarea flex">
                         <h3 class="agenda-seccion title">Descripcion</h3>
-                        <textarea class="descripcion" name="descripcion"
+                        <textarea class="descripcion" name="descripcion" 
                             placeholder="Agregar una descripcion aqui..."></textarea>
                     </div>
                     <div class="agenda-seccion flex">
                         <h5 class="title">Asignar Vendedor</h5>
-                        <select name="vendedorId">
+                        <select th:field="*{idVendedor}">
                             <option th:each="usuario : ${usuarios}" th:value="${usuario.id}"
                                 th:if="${usuario.rol == T(com.okta.aycPedidos.enums.Rol).VENDEDOR}">
                                 <div>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="agenda-seccion flex">
                         <h5 class="title">Asignar Diseñador</h5>
-                        <select name="disenadorId">
+                        <select th:field="*{idDisenador}">
                             <option th:each="usuario : ${usuarios}" th:value="${usuario.id}"
                                 th:if="${usuario.rol == T(com.okta.aycPedidos.enums.Rol).DISENADOR}">
                                 <div>

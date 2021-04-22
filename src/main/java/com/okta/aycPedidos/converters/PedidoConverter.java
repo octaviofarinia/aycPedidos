@@ -17,6 +17,7 @@ import com.okta.aycPedidos.repositories.AgendaRepository;
 import com.okta.aycPedidos.repositories.ImagenRepository;
 import com.okta.aycPedidos.repositories.PedidoRepository;
 import com.okta.aycPedidos.repositories.UsuarioRepository;
+import com.okta.aycPedidos.services.AgendaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,22 +27,18 @@ public class PedidoConverter extends Converter<PedidoModel, Pedido> {
 
 	@Autowired
 	private PedidoRepository pedidoRepository;
-
 	@Autowired
 	private AgendaRepository agendaRepository;
-
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-
 	@Autowired
 	private ImagenRepository imagenRepository;
-
 	@Autowired
 	private AgendaConverter agendaConverter;
-
+	@Autowired
+	private AgendaService agendaService;
 	@Autowired
 	private UsuarioConverter usuarioConverter;
-
 	@Autowired
 	private ImagenConverter imagenConverter;
 
@@ -60,6 +57,8 @@ public class PedidoConverter extends Converter<PedidoModel, Pedido> {
 			Agenda agendaEntity = null;
 			if (model.getAgenda().getId() != null && !model.getAgenda().getId().isEmpty()) {
 				agendaEntity = agendaRepository.getOne(model.getAgenda().getId());
+			} else {
+				agendaEntity = agendaService.persistir(model.getAgenda());
 			}
 			entity.setAgenda(agendaEntity);
 
@@ -82,7 +81,6 @@ public class PedidoConverter extends Converter<PedidoModel, Pedido> {
 			entity.setPreview(previewEntity);
 
 			BeanUtils.copyProperties(model, entity);
-
 		} catch (Exception e) {
 			throw new WebException("error al convertir el modelo " + model.toString() + " a entidad");
 		}

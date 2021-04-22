@@ -2,21 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyC Pedidos</title>
+    <div th:replace="fragments :: head_principal"></div>
 </head>
 
 <body>
+
+    <div th:replace="fragments :: navbar_admin"></div>
+
     <h1>INICIO</h1>
     <hr>
     <p>Estas adentro: <span th:text="${nombre} + ' - ' + ${rol}"></span></p>
-    <br>
-    <a href="/inicio">INICIO</a> <br>
-    <a href="/pedidosABM">PEDIDOS ABM</a> <br>
-    <a href="/usuariosABM">USUARIOS ABM</a> <br>
-    <a href="/logout">SALIR</a> <br>
+
+    <div th:replace="fragments :: js_bundle_bootstrap"></div>
+
 </body> 
 
 </html>

@@ -2,23 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyC Pedidos</title>
+    <div th:replace="fragments :: head_principal"></div>
 </head>
 
 <body>
 
-    <a href="/inicio">INICIO</a> <br>
-    <a href="/pedidosABM">PEDIDOS ABM</a> <br>
-    <a href="/usuariosABM">USUARIOS ABM</a> <br>
-    <a href="/logout">SALIR</a>
-    <hr>
+    <div th:replace="fragments :: navbar_admin"></div>
 
     <h1>USUARIO INFO</h1>
     <hr>
-    
+
     <div class="order-container">
         <div class="label">
             # Id:
@@ -42,19 +35,21 @@
         </div>
     </div>
     <h3>Pedidos Realizados</h3>
-        <div th:each="pedido : ${pedidos}">
-            <hr>
-            <p><a th:href="@{/pedidoInfo/{pedidoId}(pedidoId=${pedido.id})}">Id: <span
-                        th:text="${pedido.id}"></span></a><br></p>
-            <p>Nombre Cliente: <span th:text="${pedido.nombreCliente}"></span><br></p>
-            <p>Fecha: <span th:text="${pedido.fechaAlta}"></span><br></p>
-            <form action="/hardDeletePedido" method="POST">
-                <input type="hidden" name="pedidoId" th:value="${pedido.id}">
-                <button type="submit">Eliminar</button>
-            </form>
-            <hr>
-        </div>
+    <div th:each="pedido : ${pedidos}">
+        <hr>
+        <p><a th:href="@{/pedidoInfo/{pedidoId}(pedidoId=${pedido.id})}">Id: <span
+                    th:text="${pedido.id}"></span></a><br></p>
+        <p>Nombre Cliente: <span th:text="${pedido.nombreCliente}"></span><br></p>
+        <p>Fecha: <span th:text="${pedido.fechaAlta}"></span><br></p>
+        <form action="/hardDeletePedido" method="POST">
+            <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+            <button type="submit">Eliminar</button>
+        </form>
+        <hr>
+    </div>
 
+    <div th:replace="fragments :: js_bundle_bootstrap"></div>
+    
 </body>
 
 </html>

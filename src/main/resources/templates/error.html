@@ -2,18 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyC Pedidos</title>
+    <div th:replace="fragments :: head_principal"></div>
 </head>
 
 <body>
-    <h2 class="display-4" th:text="${codigo}"></h2>
 
-    <h3 class="diplay-4" th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}"></h3>
-    <br>
-    <a href="/inicio">VOLVER</a>
+    <div th:replace="fragments :: navbar_index"></div>
+
+    <div class="container">
+        <h2 class="display-4" th:text="${codigo}"></h2>
+        <h3 class="diplay-4" th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}"></h3>
+    </div>
+
+    <div th:replace="fragments :: js_bundle_bootstrap"></div>
 </body>
 
 </html>
