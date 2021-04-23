@@ -1,6 +1,7 @@
 package com.okta.aycPedidos.modelos;
 
 import java.io.Serializable;
+import java.util.Base64;
 
 import lombok.Data;
 
@@ -17,4 +18,7 @@ public class ImagenModel implements Serializable {
 	
 	private byte[] contenido;
 	
+	public String getImgData() {
+        return Base64.getMimeEncoder().encodeToString(contenido);
+    }
 }

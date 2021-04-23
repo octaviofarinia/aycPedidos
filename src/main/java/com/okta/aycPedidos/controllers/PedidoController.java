@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.okta.aycPedidos.converters.UsuarioConverter;
-import com.okta.aycPedidos.entidades.Comentario;
-import com.okta.aycPedidos.entidades.Imagen;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.TipoComentario;
 import com.okta.aycPedidos.excepciones.WebException;
+import com.okta.aycPedidos.modelos.ComentarioModel;
+import com.okta.aycPedidos.modelos.ImagenModel;
+import com.okta.aycPedidos.modelos.PedidoModel;
 import com.okta.aycPedidos.services.ComentarioService;
 import com.okta.aycPedidos.services.PedidoService;
 import com.okta.aycPedidos.services.UsuarioService;
@@ -46,32 +47,39 @@ public class PedidoController {
 	@GetMapping("/pedidoInfo/{pedidoId}")
 	public String pedidoInfo(ModelMap modelo, @PathVariable String pedidoId) {
 		
-		Pedido pedido = pedidoService.getOneById(Long.parseLong(pedidoId));
-		Comentario descripcion = comentarioService.buscarDescripcionPorPedido(pedido);
+		try {
+			
+			PedidoModel pedido = pedidoService.getOneByIdMODEL(Long.parseLong(pedidoId));
+			ComentarioModel descripcion = comentarioService.buscarDescripcionPorPedidoMODEL(pedido);
+			
+			List<ImagenModel> tapaImagenes = pedido.getAgenda().getTapa().getCustomImagenes();
+			List<ImagenModel> contratapaImagenes = pedido.getAgenda().getContratapa().getCustomImagenes();
+			
+			
+			List<ComentarioModel> comentarios = comentarioService.listarComentariosPorPedidoMODELS(pedido);
+			
+			//ordena la lista para que los comentarios se muestren en orden de creacion
+			Collections.sort(comentarios, new Comparator<ComentarioModel>() {
+				  public int compare(ComentarioModel o1, ComentarioModel o2) {
+				      return o1.getFechaAlta().compareTo(o2.getFechaAlta());
+				  }
+			});
+			
+			Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
+			
+			modelo.addAttribute("usuario", usuario);
+			modelo.addAttribute("pedido", pedido);
+			modelo.addAttribute("tapaImagenes", tapaImagenes);
+			modelo.addAttribute("contratapaImagenes", contratapaImagenes);
+			modelo.addAttribute("descripcion", descripcion);
+			modelo.addAttribute("comentarios", comentarios);
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return "redirect:/pedidoInfo/"+pedidoId+"";
+		}
 		
-		List<Imagen> tapaImagenes = pedido.getAgenda().getTapa().getCustomImagenes();
-		List<Imagen> contratapaImagenes = pedido.getAgenda().getContratapa().getCustomImagenes();
-		
-		
-		List<Comentario> comentarios = comentarioService.listarComentariosPorPedido(pedido);
-		
-		//ordena la lista para que los comentarios se muestren en orden de creacion
-		Collections.sort(comentarios, new Comparator<Comentario>() {
-			  public int compare(Comentario o1, Comentario o2) {
-			      return o1.getFechaAlta().compareTo(o2.getFechaAlta());
-			  }
-		});
-		
-		Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
-		
-		modelo.put("usuario", usuario);
-		modelo.put("pedido", pedido);
-		modelo.put("tapaImagenes", tapaImagenes);
-		modelo.put("contratapaImagenes", contratapaImagenes);
-		modelo.put("descripcion", descripcion);
-		modelo.put("comentarios", comentarios);
-		
-		return "/Pedidos/pedidoInfo.html";
+		return "/Pedidos/pedidoInfo_copy.html";
 	}
 	
 	@PostMapping("/registrarComentario")
@@ -83,7 +91,6 @@ public class PedidoController {
 		Long pedidoIdLong = Long.parseLong(pedidoId);
 		Pedido pedido = pedidoService.getOneById(pedidoIdLong);
 		
-		//ARREGLAR DESPUES -- CAMBIAR FORMA DE REGISTRAR COMENTARIOS
 		Usuario usuario = usuarioConverter.modelToEntity(usuarioService.buscarPorId(usuarioId));
 		
 		comentarioService.registrarComentario(pedido, usuario, contenido, TipoComentario.COMENTARIO);

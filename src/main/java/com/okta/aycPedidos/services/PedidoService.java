@@ -174,6 +174,11 @@ public class PedidoService {
 	public Pedido getOneById(Long pedidoId) {
 		return pedidoRepository.getOne(pedidoId);
 	}
+	
+	@Transactional
+	public PedidoModel getOneByIdMODEL(Long pedidoId) throws WebException {
+		return pedidoConverter.entityToModel(pedidoRepository.getOne(pedidoId));
+	}
 
 	@Transactional
 	public List<Pedido> listarPedidosActivos() {

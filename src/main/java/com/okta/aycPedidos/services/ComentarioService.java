@@ -10,21 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.okta.aycPedidos.converters.ComentarioConverter;
+import com.okta.aycPedidos.converters.PedidoConverter;
 import com.okta.aycPedidos.entidades.Comentario;
 import com.okta.aycPedidos.entidades.Pedido;
 import com.okta.aycPedidos.entidades.Usuario;
 import com.okta.aycPedidos.enums.TipoComentario;
 import com.okta.aycPedidos.excepciones.WebException;
 import com.okta.aycPedidos.modelos.ComentarioModel;
+import com.okta.aycPedidos.modelos.PedidoModel;
 import com.okta.aycPedidos.repositories.ComentarioRepository;
 
 @Service
 public class ComentarioService {
 
 	@Autowired
-	ComentarioRepository comentarioRepository;
+	private ComentarioRepository comentarioRepository;
 	@Autowired
-	ComentarioConverter comentarioConverter;
+	private ComentarioConverter comentarioConverter;
+	@Autowired
+	private PedidoConverter pedidoConverter;
 
 	@Transactional
 	public void registrarComentario(Pedido pedido, Usuario autor, String contenido, TipoComentario tipo) {
@@ -85,9 +89,6 @@ public class ComentarioService {
 		}
 	}
 
-	// METODOS CON MODELOS
-
-	// Registra nuevos comentarios o modifica uno ya creado
 	@Transactional
 	public Comentario persistir(ComentarioModel comentarioModel) throws WebException {
 
@@ -106,10 +107,21 @@ public class ComentarioService {
 	public Comentario buscarDescripcionPorPedido(Pedido pedido) {
 		return comentarioRepository.buscarDescripcionPorPedido(pedido);
 	}
+	
+	@Transactional
+	public ComentarioModel buscarDescripcionPorPedidoMODEL(PedidoModel pedido) throws WebException {
+		return comentarioConverter.entityToModel(comentarioRepository.buscarDescripcionPorPedido(pedidoConverter.modelToEntity(pedido)));
+	}
 
 	@Transactional
 	public List<Comentario> listarComentariosPorPedido(Pedido pedido) {
 		return comentarioRepository.listarComentariosPorPedido(pedido);
+	}
+	
+	@Transactional
+	public List<ComentarioModel> listarComentariosPorPedidoMODELS(PedidoModel pedidoModel) throws WebException {
+		Pedido pedido = pedidoConverter.modelToEntity(pedidoModel);
+		return comentarioConverter.entitiesToModels(comentarioRepository.listarComentariosPorPedido(pedido));
 	}
 
 	// el nombre del metodo es horrible pero este devuelve todos los comentario incluida la descripcion del pedido xd
